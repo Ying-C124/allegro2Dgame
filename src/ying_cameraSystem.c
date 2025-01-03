@@ -1,5 +1,19 @@
 #include "myheader.h"
 
+void draw_ground(Ground ground) {
+    al_draw_filled_rectangle(ground.x, ground.y, ground.x + ground.width, ground.y + ground.height, ground.color);
+}
+
+void draw_player(Player player) {
+    al_draw_scaled_bitmap(player.image,
+                          0, 0,                                  // Source origin
+                          al_get_bitmap_width(player.image),      // Source width
+                          al_get_bitmap_height(player.image),     // Source height
+                          player.x, player.y,                     // Destination origin
+                          player.width, player.height,            // Destination width and height
+                          0); 
+}
+
 void ying_setCamera(Camera* cameraInput,double windowWidth,double windowHeight){
     //camera左上角位置
     cameraInput->x = 0;
@@ -53,8 +67,6 @@ void ying_updateCamera(Player *playerInput,Camera* cameraInput){
 
 
     if(cameraInput->MoveVertical !=0 ) cameraInput->MoveVertical = cameraInput->MoveVertical + cameraInput->VerticalSpeed;
-    // printf("%lf",playerInput->verticalSpeed);
-    // printf("    %lf",cameraInput->MoveVertical);
 
     if(playerInput->directionStatus == 1){
         if(playerInput->walkingStatus == 1){
@@ -134,8 +146,8 @@ void ying_renderWorld(Camera* cameraInput,Ground groundInputs[],Object objectInp
     for(i=0 ; i<numGrounds ; i++){
         if((groundInputs[i].x + groundInputs[i].width > cameraInput->x )&&
         (groundInputs[i].x < cameraInput->x+cameraInput->cameraWidth)&&
-        (groundInputs[i].y + groundInputs[i].height > cameraInput->y)&&
-        (groundInputs[i].y < cameraInput->y+cameraInput->cameraHeight))
+        (groundInputs[i].y + groundInputs[i].height +50 > cameraInput->y)&&
+        (groundInputs[i].y -50 < cameraInput->y+cameraInput->cameraHeight))
         {
         tempGround = groundInputs[i];
         al_draw_filled_rectangle(tempGround.x, tempGround.y, tempGround.x + tempGround.width, tempGround.y + tempGround.height, tempGround.color);
@@ -181,13 +193,22 @@ void ying_renderWorld(Camera* cameraInput,Ground groundInputs[],Object objectInp
                             0); 
     }
     if(tempPlayer.direction == 0){
-        al_draw_scaled_bitmap(tempPlayer.image,
-                            0, 0,                                  // Source origin
-                            al_get_bitmap_width(tempPlayer.image),      // Source width
-                            al_get_bitmap_height(tempPlayer.image),     // Source height
-                            tempPlayer.x+tempPlayer.width, tempPlayer.y,                     // Destination origin
-                            -tempPlayer.width, tempPlayer.height,            // Destination width and height
-                            0); 
+        if(tempPlayer.width == 40)
+            al_draw_scaled_bitmap(tempPlayer.image,
+                                0, 0,                                  // Source origin
+                                al_get_bitmap_width(tempPlayer.image),      // Source width
+                                al_get_bitmap_height(tempPlayer.image),     // Source height
+                                tempPlayer.x+tempPlayer.width, tempPlayer.y,                     // Destination origin
+                                -tempPlayer.width, tempPlayer.height,            // Destination width and height
+                                0); 
+        if(tempPlayer.width == 115)
+            al_draw_scaled_bitmap(tempPlayer.image,
+                                0, 0,                                  // Source origin
+                                al_get_bitmap_width(tempPlayer.image),      // Source width
+                                al_get_bitmap_height(tempPlayer.image),     // Source height
+                                tempPlayer.x+tempPlayer.width-75, tempPlayer.y,                     // Destination origin
+                                -tempPlayer.width, tempPlayer.height,            // Destination width and height
+                                0); 
     }
 
     //////////

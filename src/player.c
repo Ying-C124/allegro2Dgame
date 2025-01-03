@@ -19,7 +19,9 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
     new_verticalSpeed = player->verticalSpeed - player->g; 
     new_y = player->y - player->verticalSpeed;
     player->frame_count+=1;
-    if (player->prev_key == 0 && player->img_num > 12){
+
+    printf("%d  ",player->img_num);
+    if (player->prev_key == 0 && (player->img_num > 12 && player->img_num <22)){
         player->img_num = 0;
     }
     player->prev_key = 0;
@@ -34,6 +36,16 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
         }
         else if(player->img_num == 21){
             player->img_num = 13;
+        }
+        else if(player->img_num >= 22 && player->img_num < 35){
+            player->width = 115;
+            player->image = player_image_tmp[player->img_num];
+            player->img_num += 1;
+            return;
+        }
+        else if(player->img_num == 35||player->img_num == 36){
+            player->img_num = 0;
+            player->width = 40;
         }
         // if(player->img_num == 11){
         //     player->img_num = 0;
@@ -78,6 +90,7 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
 
 
     if (al_key_down(keyState, ALLEGRO_KEY_LEFT)||(JoyState->stick[0].axis[0]<-0.5)) {
+        player->width = 40;
         new_x -= player->horizonSpeed;
         player->walkingStatus = true;
         player->directionStatus = 1;
@@ -87,6 +100,7 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
             player->img_num = 13;
     }
     else if (al_key_down(keyState, ALLEGRO_KEY_RIGHT)||(JoyState->stick[0].axis[0]>0.5)) {
+        player->width = 40;
         new_x += player->horizonSpeed;
         player->walkingStatus = true;
         player->directionStatus = 0;
@@ -142,26 +156,33 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
         player->onGround = false;
 }
 
-
-
-void ying_attacking(Player *playerInput, Monster monsterInput[] , ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState){
-    // printf("ATTS:%d\n",playerInput->attackingStatus);
-        if(al_key_down(keyState,ALLEGRO_KEY_D)||JoyState->button[1]){
+void ying_attacking(Player *playerInput, mkworld* inputWorld , ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState, int *CD,ALLEGRO_BITMAP *inputplayerImage[]){
+    Monster *MonsterPtr;
+    MonsterPtr = inputWorld->monsterAddress;
+        *CD -=1;
+        if (*CD<0)
+            *CD = 0;
+        printf("%d\n",*CD);
+        if((al_key_down(keyState,ALLEGRO_KEY_D)||JoyState->button[1])&&*CD == 0){
             int k;
+            *CD = 40;
+            playerInput->width = 115;
+            playerInput->img_num = 22;
+            playerInput->image = inputplayerImage[22];
             for(k=0;k<NUM_MONSTERS;k++){
                 if(playerInput->directionStatus == 0){ //玩家向右
-                    if((monsterInput[k].x>playerInput->x+playerInput->width && (monsterInput[k].x < playerInput->x+playerInput->width + ATTACK_RANGE)
-                    && (monsterInput[k].y + monsterInput[k].height <= playerInput->y + playerInput->height)  )){
+                    if((MonsterPtr[k].x>playerInput->x+playerInput->width && (MonsterPtr[k].x < playerInput->x+playerInput->width + ATTACK_RANGE)
+                    && (MonsterPtr[k].y + MonsterPtr[k].height <= playerInput->y + playerInput->height)  )){
                         if(playerInput->attackingStatus == 0){
-                            monsterInput[k].HP -= ATTACK_PER_LV * playerInput->LV;
-                            printf("HIT!\n");
+                            MonsterPtr[k].HP -= ATTACK_PER_LV * playerInput->LV;
+                            printf("HITR!\n");
                         } 
                     }
                 }
                 else{
-                    if((monsterInput[k].x + monsterInput[k].width < playerInput->x) && (monsterInput[k].x + monsterInput[k].width >playerInput->x - ATTACK_RANGE)){
-                        printf("HIT!\n");
-                        if(playerInput->attackingStatus == 0) monsterInput[k].HP -= ATTACK_PER_LV * playerInput->LV;
+                    if((MonsterPtr[k].x + MonsterPtr[k].width < playerInput->x) && (MonsterPtr[k].x + MonsterPtr[k].width >playerInput->x - ATTACK_RANGE)){
+                        printf("HITL!\n");
+                        if(playerInput->attackingStatus == 0) MonsterPtr[k].HP -= ATTACK_PER_LV * playerInput->LV;
                     }
                 }
             }

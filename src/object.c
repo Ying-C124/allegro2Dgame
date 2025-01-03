@@ -6,9 +6,9 @@ Object create_object(double x, double y, double width, double height, ALLEGRO_BI
 }
 
 
-void check_object_collision(Object object[], Player *player, int *score) {
+void check_object_collision(Object object[], Player *player, int *score,int objectNum) {
     int i;
-    for(i = 0; i<=NUM_OBJECTS; i++)
+    for(i = 0; i<=objectNum; i++)
     {
         switch(object[i].typeID)
         {

@@ -1,6 +1,5 @@
 #include "myheader.h"
 
-
 int ying_MenuDecoder(ALLEGRO_EVENT *ev){
     if(ev->user.data1 ==VGA||
     ev->user.data1 ==SVGA||
@@ -57,6 +56,40 @@ void ying_Resoultion(int *nativeWidth, int *nativeHeigth, int inputMenuID,Camera
     inputCamera->cameraHeight = settingHeigth;
 }
 
-void ying_GameMenu(){
+void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel){
+    if(ev->user.data1 ==SAVE_SCORE){
+        printf("Save_Score\n");
+    }
+    else if(ev->user.data1 ==READ_SCORE_BOARD){
+        printf("Read_Score\n");
+    }
+    else if(ev->user.data1 ==SPAWN){
+        inputPlayer->x=inputPlayer->checkpoint_x;
+        inputPlayer->y=inputPlayer->checkpoint_y;
+    }
+    else if(ev->user.data1 ==BACK_TO_MENU){
+        printf("BACK_TO_MENU\n");
+    }
+    else if(ev->user.data1 ==EXIT_ID){
+        *inputActive = false;
+    }
+    else if(ev->user.data1 == LEVEL1){
+        *inputLevel = 1;
+        ying_ResetPlayerLocal(inputPlayer);
+    }
+    else if(ev->user.data1 == LEVEL2){
+        *inputLevel = 2;
+        ying_ResetPlayerLocal(inputPlayer);
+    }
+    else if(ev->user.data1 == LEVEL3){
+        *inputLevel = 3;
+        ying_ResetPlayerLocal(inputPlayer);
+    }
+}
 
+void ying_ResetPlayerLocal(Player *inputPlayer){
+    inputPlayer->x=100;
+    inputPlayer->y=100;
+    inputPlayer->checkpoint_x = 100;
+    inputPlayer->checkpoint_y = 100;
 }

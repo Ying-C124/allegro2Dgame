@@ -33,11 +33,14 @@ void print_joystick_log(ALLEGRO_EVENT *events)   //搖桿紀錄的總function
 }
 
 void ying_joystickFillZero(ALLEGRO_JOYSTICK_STATE *joyState){
+    int i;
     joyState->stick[0].axis[0] = 0;
     joyState->stick[0].axis[1] = 0;
     joyState->stick[1].axis[0] = 0;
     joyState->stick[1].axis[1] = 0;
-    joyState->button[0] = 0;
+    for(i=0;i<8;i++){
+        joyState->button[i] = 0;
+    }
 }
 
 
