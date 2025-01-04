@@ -19,7 +19,7 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
     new_verticalSpeed = player->verticalSpeed - player->g; 
     new_y = player->y - player->verticalSpeed;
     player->frame_count+=1;
-    printf("%f   %f\n",player->x,player->y);
+    //printf("%f   %f\n",player->x,player->y);
     //printf("%d  ",player->img_num);
     if (player->prev_key == 0 && (player->img_num > 12 && player->img_num <22)){
         player->img_num = 0;
@@ -224,7 +224,7 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
     if(player->verticalSpeed != 0)
         player->onGround = false;
 
-    printf("%d,%lf,%lf,%lf,%lf\n",player->collisionVert,new_verticalSpeed,player->verticalSpeed,new_y,new_y+player->height);
+    //printf("%d,%lf,%lf,%lf,%lf\n",player->collisionVert,new_verticalSpeed,player->verticalSpeed,new_y,new_y+player->height);
     // if(player->onGround == false)
     //     printf("1");
     // if(player->onGround == true)

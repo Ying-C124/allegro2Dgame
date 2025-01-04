@@ -22,6 +22,7 @@ int main() {
     int score = 0;
     int i,Level;
     int CD = 40;
+    int monsterCD = 40;
     ying_loadingBitmap(&Bitmaps);                           //inital and Load Bitmaps.
     leng_playerImgInit(Bitmaps.player_images,playerImages); //inital and Load the Animation for Player.
     ying_loadingSound(&Sounds);                             //inital and Load Sound,Samples.
@@ -80,13 +81,15 @@ int main() {
                 al_clear_to_color(al_map_rgb(0, 0, 0));  
                 move_player(&player, world[Level-1].groundAddress, world[Level-1].groundNum, world[Level-1].objectAddress, world[Level-1].objectNum, &keyState , &joyState, Bitmaps.player_images);
                 check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum,&Bitmaps);
-                moveMonster(world[Level-1].monsterAddress);
+                moveMonster(world[Level-1].monsterAddress,world[Level-1].monsterNum);
+                monsterCollision(world[Level-1].monsterAddress,&player,&monsterCD,world[Level-1].monsterNum);
                 ying_attacking(&player,&world[Level-1] ,&keyState,&joyState,&CD,Bitmaps.player_images,&score,&Sounds);
                 ying_updateCamera(&player,&camera);
                 ying_renderWorld(&camera,world[Level-1].groundAddress,world[Level-1].objectAddress,world[Level-1].monsterAddress,
                 world[Level-1].textAddress,&player,score,
                 world[Level-1].groundNum,world[Level-1].objectNum,world[Level-1].monsterNum,world[Level-1].textNum);
                 //al_draw_text(font_24, al_map_rgb(255, 0, 0), 100, 400, 0, "TEST");
+                printf("%d\n",player.HP);
                 al_flip_display();
            
             // al_rest(0.016);  

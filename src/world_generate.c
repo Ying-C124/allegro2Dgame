@@ -22,22 +22,22 @@ void createWorld(mkworld world[],int worldNum,MKBitmap *inputBitmaps,MKSample *i
     world[i].monsterNum = 8;
     world[i].monsterAddress = malloc(sizeof(Monster)*world[i].monsterNum);
     createMonster1(world[i].monsterAddress,inputBitmaps);
-    world[i].textNum = 13;
+    world[i].textNum = 16;
     world[i].textAddress = malloc(sizeof(Text)*world[i].textNum);
     createText1(world[i].textAddress,font_16);
    
     //world_2
     i=1;
-    world[i].groundNum = 2;
+    world[i].groundNum = 4;
     world[i].groundAddress = malloc(sizeof(Ground)*world[i].groundNum);
     createGround2(world[i].groundAddress);
-    world[i].objectNum = 30;
+    world[i].objectNum = 32;
     world[i].objectAddress = malloc(sizeof(Object)*world[i].objectNum);
     createObject2(world[i].objectAddress,inputBitmaps,inputSamples);
-    world[i].monsterNum = 1;
+    world[i].monsterNum = 8;
     world[i].monsterAddress = malloc(sizeof(Monster)*world[i].monsterNum);
     createMonster2(world[i].monsterAddress,inputBitmaps);
-    world[i].textNum = 1;
+    world[i].textNum = 4;
     world[i].textAddress = malloc(sizeof(Text)*world[i].textNum);
     createText2(world[i].textAddress,font_16);
     //world_3
@@ -48,7 +48,7 @@ void createWorld(mkworld world[],int worldNum,MKBitmap *inputBitmaps,MKSample *i
     world[i].objectNum = 8;
     world[i].objectAddress = malloc(sizeof(Object)*world[i].objectNum);
     createObject3(world[i].objectAddress,inputBitmaps,inputSamples);
-    world[i].monsterNum = 5;
+    world[i].monsterNum = 8;
     world[i].monsterAddress = malloc(sizeof(Monster)*world[i].monsterNum);
     createMonster3(world[i].monsterAddress,inputBitmaps);
     world[i].textNum = 4;
@@ -115,12 +115,17 @@ void createText1(Text *inputTextAddress ,ALLEGRO_FONT *font_16){
     inputTextAddress[10] = create_text(4750,250,"Tips:You can just ignore the monsters",font_16);
     inputTextAddress[11] = create_text(4750,300,"but you will get lower score in the end",font_16);
     inputTextAddress[12] = create_text(6370,250,"Hit the buttom of the chest to open it",font_16);
+    inputTextAddress[13] = create_text(10,200,"The green bar above is your HP",font_16);
+    inputTextAddress[14] = create_text(3300,250,"If you bump into the monster",font_16);
+    inputTextAddress[15] = create_text(3350,300,"you will lose HP",font_16);
 }
 
 
 void createGround2(Ground *inputGroundAddress){
     inputGroundAddress[0]=create_ground(0, 500, 1500, 300, al_map_rgb(139, 69, 19));
     inputGroundAddress[1]=create_ground(1600, 500, 1500, 300, al_map_rgb(139, 69, 19));
+    inputGroundAddress[2]=create_ground(3200, 500, 1500, 300, al_map_rgb(139, 69, 19));
+    inputGroundAddress[3]=create_ground(4800, 500, 300, 300, al_map_rgb(139, 69, 19));
 }
 void createObject2(Object *inputObjectAddress,MKBitmap *inputBitmaps,MKSample *inputSamples){
     inputObjectAddress[0]=create_object(1100, 450, 35, 35, inputBitmaps->reward_image, 3, false, true, true, NULL,inputSamples->coin);
@@ -153,13 +158,25 @@ void createObject2(Object *inputObjectAddress,MKBitmap *inputBitmaps,MKSample *i
     inputObjectAddress[27]=create_object(2300, 200, 35, 35, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[17],inputSamples->chest);
     inputObjectAddress[28]=create_object(2500, 200, 35, 35, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[18],inputSamples->chest);
     inputObjectAddress[29]=create_object(2400, 100, 35, 35, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[19],inputSamples->chest);
+    inputObjectAddress[30]=create_object(4900, 400, 100, 100, inputBitmaps->end_image, 4, false, true, true, NULL,inputSamples->coin);
+    inputObjectAddress[31]=create_object(3030, 450, 35, 50, inputBitmaps->checkpoint_image, 1, false, true, true, NULL,inputSamples->check);
 
 }
 void createMonster2(Monster *inputMonsterAddress,MKBitmap *inputBitmaps){
-    inputMonsterAddress[0] = create_monster(3100, 450, 35, 50, 2, inputBitmaps->monster_image1, 1, 1, 0, false, true, 20);
+    inputMonsterAddress[0] = create_monster(3400, 150, 85, 40, 5, inputBitmaps->monster_image2, 2, 1, 0, false, true, 20);
+    inputMonsterAddress[1] = create_monster(3700, 450, 85, 40, 5, inputBitmaps->monster_image2, 2, -1, 0, false, true, 20);
+    inputMonsterAddress[2] = create_monster(4000, 150, 85, 40, 5, inputBitmaps->monster_image2, 2, 1, 0, false, true, 20);
+    inputMonsterAddress[3] = create_monster(4300, 150, 85, 40, 5, inputBitmaps->monster_image2, 2, -1, 0, false, true, 20);
+    inputMonsterAddress[4] = create_monster(4000, 150, 85, 40, 5, inputBitmaps->monster_image2, 2, 1, 0, false, true, 20);
+    inputMonsterAddress[5] = create_monster(4000, 150, 85, 40, 5, inputBitmaps->monster_image2, 2, 1, 0, false, true, 20);
+    inputMonsterAddress[6] = create_monster(4000, 150, 85, 40, 5, inputBitmaps->monster_image2, 2, 1, 0, false, true, 20);
+    inputMonsterAddress[7] = create_monster(4000, 150, 85, 40, 5, inputBitmaps->monster_image2, 2, 1, 0, false, true, 20);
 }
 void createText2(Text *inputTextAddress ,ALLEGRO_FONT *font_16){
-    inputTextAddress[0] = create_text(100,400,"What happens if there are a lot of coins?",font_16);
+    inputTextAddress[0] = create_text(300,400,"What happens if there are a lot of coins?",font_16);
+    inputTextAddress[1] = create_text(2350,0,"Treasure mountain?",font_16);
+    inputTextAddress[2] = create_text(4105,-50,"Why are u here?",font_16);
+    inputTextAddress[3] = create_text(100,200,"Just a strange level with strange things",font_16);
 }
 
 void createGround3(Ground *inputGroundAddress){

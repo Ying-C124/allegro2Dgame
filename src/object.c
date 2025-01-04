@@ -14,7 +14,7 @@ void check_object_collision(Object object[], Player *player, int *score,int obje
         {
             //checkpoint
             case 1:
-                if (player->x < object[i].x + object[i].width && player->x + player->width > object[i].x &&
+                if (player->x < object[i].x + object[i].width && player->x + 32 > object[i].x &&
                     player->y < object[i].y + object[i].height && player->y + player->height > object[i].y) {
                     player->checkpoint_x = object[i].x;
                     player->checkpoint_y = object[i].y;
@@ -46,7 +46,7 @@ void check_object_collision(Object object[], Player *player, int *score,int obje
                 break;
             //money
             case 3:
-                if (!object[i].isHit && player->x < object[i].x + object[i].width && player->x + player->width > object[i].x &&
+                if (!object[i].isHit && player->x < object[i].x + object[i].width && player->x + 40 > object[i].x &&
                     player->y < object[i].y + object[i].height && player->y + player->height > object[i].y && object[i].isVisible == true) {
                     object[i].isHit = true;
                     object[i].isVisible = false;
@@ -60,7 +60,7 @@ void check_object_collision(Object object[], Player *player, int *score,int obje
                 break;
             //end    
             case 4:
-                if (!object[i].isHit && player->x < object[i].x + object[i].width && player->x + player->width > object[i].x &&
+                if (!object[i].isHit && player->x < object[i].x + object[i].width && player->x + 32 > object[i].x &&
                     player->y < object[i].y + object[i].height && player->y + player->height > object[i].y && object[i].isVisible == true) {
                     object[i].isHit = true;
                     object[i].isVisible = false;

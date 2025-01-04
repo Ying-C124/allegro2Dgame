@@ -33,9 +33,9 @@ Text create_text(double x, double y,char displayText[],ALLEGRO_FONT* font);
 void draw_player(Player player);
 void draw_ground(Ground ground);
 void drawMonster(Monster monster);
-
+void monsterCollision(Monster monsters[],Player *player,int *monsterCD,int numMonsters);
 void move_player(Player *player, Ground grounds[], int num_grounds,Object objects[], int num_objects, ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState,ALLEGRO_BITMAP *player_image_tmp[]);
-void moveMonster(Monster monsters[]);
+void moveMonster(Monster monsters[],int numMonsters);
 void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps);
 
 //all_

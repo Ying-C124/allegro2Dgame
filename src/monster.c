@@ -47,9 +47,9 @@ void drawMonster(Monster monster) {
     }
 }
 
-void moveMonster(Monster monsters[]){
+void moveMonster(Monster monsters[],int numMonsters){
     int i;
-    for(i = 0; i<=NUM_MONSTERS; i++)
+    for(i = 0; i<=numMonsters; i++)
     {
         switch(monsters[i].typeID)
         {
@@ -78,6 +78,25 @@ void moveMonster(Monster monsters[]){
                 }
                 break;
         }
+    }
+}
+
+void monsterCollision(Monster monsters[],Player *player,int *monsterCD,int numMonsters){
+    int i;
+    *monsterCD -= 1;
+    if(*monsterCD < 0){
+        *monsterCD = 0;
+    }   
+    for(i = 0; i<=numMonsters;i++)
+    {
+        if (player->x < monsters[i].x + monsters[i].width && player->x + 30 > monsters[i].x &&
+            player->y < monsters[i].y + monsters[i].height && player->y + player->height > monsters[i].y && monsters[i].HP>0 && *monsterCD == 0){
+            player->HP -= 5;
+            *monsterCD = 40;   
+        }         
+    }
+    if(player->HP<= 0){
+
     }
 }
 

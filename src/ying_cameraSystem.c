@@ -141,7 +141,12 @@ void ying_renderWorld(Camera* cameraInput,Ground groundInputs[],Object objectInp
     Monster tempMonster;
     Text tempText;
     char scoreText[20];
-    
+    char levelText[20];
+    int R=0;
+    int G=255;
+    int B=0;
+    double hpRate;
+
     ying_applyTransform(cameraInput);
     for(i=0 ; i<numGrounds ; i++){
         if((groundInputs[i].x + groundInputs[i].width > cameraInput->x )&&
@@ -180,6 +185,48 @@ void ying_renderWorld(Camera* cameraInput,Ground groundInputs[],Object objectInp
         al_draw_text(tempText.font, al_map_rgb(255, 255, 255), tempText.x, tempText.y, 0, tempText.displayText);
     }
     
+
+
+    
+    hpRate = (double)playerInput->HP/(double)playerInput->MaxHP;
+    if(hpRate > 0.5){
+        R=0;
+        G=255;
+    }
+    else if(hpRate > 0.25){
+        R=255;
+        G=255;
+    }
+    else{
+        R=255;
+        G=0;
+    }
+
+    if(cameraInput->cameraWidth>1024){
+        //Draw HP Bar Background for Resoultion Width Wider than 1024 pixel
+        al_draw_filled_triangle(cameraInput->x+cameraInput->cameraWidth*3/8-34,cameraInput->y+25,
+        cameraInput->x+cameraInput->cameraWidth*3/8,cameraInput->y+25,
+        cameraInput->x+cameraInput->cameraWidth*3/8-34 ,cameraInput->y+59 ,al_map_rgb(255, 255, 255));
+        al_draw_filled_rectangle(cameraInput->x,cameraInput->y+25,cameraInput->x+cameraInput->cameraWidth*3/8-34,cameraInput->y+59,al_map_rgb(255, 255, 255));
+        //Draw HP Bar
+        al_draw_filled_triangle(cameraInput->x+cameraInput->cameraWidth*3/8*hpRate-36,cameraInput->y+27,
+        cameraInput->x+cameraInput->cameraWidth*3/8*hpRate-5,cameraInput->y+27,
+        cameraInput->x+cameraInput->cameraWidth*3/8*hpRate-36 ,cameraInput->y+57 ,al_map_rgb(R, G, B));
+        al_draw_filled_rectangle(cameraInput->x,cameraInput->y+27,cameraInput->x+cameraInput->cameraWidth*3/8*hpRate-36,cameraInput->y+57,al_map_rgb(R, G, B));
+    }
+    else{
+        //Draw HP Bar Background for Resoultion Width Small than 1024 pixel
+        al_draw_filled_triangle(cameraInput->x+cameraInput->cameraWidth*1/2-34,cameraInput->y+25,
+        cameraInput->x+cameraInput->cameraWidth*1/2,cameraInput->y+25,
+        cameraInput->x+cameraInput->cameraWidth*1/2-34 ,cameraInput->y+59 ,al_map_rgb(255, 255, 255));
+        al_draw_filled_rectangle(cameraInput->x,cameraInput->y+25,cameraInput->x+cameraInput->cameraWidth*1/2-34,cameraInput->y+59,al_map_rgb(255, 255, 255));
+        //Draw HP Bar
+        al_draw_filled_triangle(cameraInput->x+cameraInput->cameraWidth*1/2*hpRate-36,cameraInput->y+27,
+        cameraInput->x+cameraInput->cameraWidth*1/2*hpRate-5,cameraInput->y+27,
+        cameraInput->x+cameraInput->cameraWidth*1/2*hpRate-36 ,cameraInput->y+57 ,al_map_rgb(R, G, B));
+        al_draw_filled_rectangle(cameraInput->x,cameraInput->y+27,cameraInput->x+cameraInput->cameraWidth*1/2*hpRate-36,cameraInput->y+57,al_map_rgb(R, G, B));
+    
+    }
     
     tempPlayer = *playerInput;
     /////////
@@ -213,5 +260,7 @@ void ying_renderWorld(Camera* cameraInput,Ground groundInputs[],Object objectInp
 
     //////////
     sprintf(scoreText, "Score: %d", score);
+    sprintf(levelText, "Level: %d", playerInput->LV);
     al_draw_text(textInputs[0].font, al_map_rgb(255, 255, 255),cameraInput->x + 10, cameraInput->y + 10, ALLEGRO_ALIGN_LEFT, scoreText);
+    al_draw_text(textInputs[0].font, al_map_rgb(255, 255, 255),cameraInput->x + 10, cameraInput->y + 59, ALLEGRO_ALIGN_LEFT, levelText);
 }
