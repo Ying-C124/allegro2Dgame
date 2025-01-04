@@ -223,6 +223,12 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
     // printf("playerX:%f  playerY:%f\n",player->x,player->y);
     if(player->verticalSpeed != 0)
         player->onGround = false;
+
+    printf("%d,%lf,%lf,%lf,%lf\n",player->collisionVert,new_verticalSpeed,player->verticalSpeed,new_y,new_y+player->height);
+    // if(player->onGround == false)
+    //     printf("1");
+    // if(player->onGround == true)
+    //     printf("0");
 }
 
 void ying_attacking(Player *playerInput, mkworld* inputWorld , ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState, int *CD,ALLEGRO_BITMAP *inputplayerImage[], int* score,MKSample *inputSamples){

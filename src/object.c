@@ -40,8 +40,6 @@ void check_object_collision(Object object[], Player *player, int *score,int obje
                     object[i].image = inputBitmaps->chest_image2;
                     object[i].audioTrigger = false;
                     object[i].bond->isVisible = true;
-                    al_set_sample_instance_playing(object[i].audio, false);
-                    al_set_sample_instance_playing(object[i].audio, true);
                 }
                 break;
             //money
