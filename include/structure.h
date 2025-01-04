@@ -29,7 +29,7 @@ typedef struct {
     int frame_count;
     int prev_key;
     int MaxHP;
-    bool MapEnable;
+    int MapEnable;
 } Player;
 
 
@@ -79,6 +79,10 @@ typedef struct BITMAPS
     ALLEGRO_BITMAP *end_image;
 
     ALLEGRO_BITMAP *player_images[playerImages];
+    ALLEGRO_BITMAP *world_map_lowRes;
+    ALLEGRO_BITMAP *world_map_mediumRes;
+    ALLEGRO_BITMAP *world_map_highRes;
+    ALLEGRO_BITMAP *temp;
 }MKBitmap;
 
 //world structure define

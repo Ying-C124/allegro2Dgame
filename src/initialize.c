@@ -11,6 +11,9 @@ void ying_loadingBitmap(MKBitmap *inputBitmaps){
     inputBitmaps->end_image = al_load_bitmap("end.png");
     inputBitmaps->monster_image1 = al_load_bitmap("monster1.png");
     inputBitmaps->monster_image2 = al_load_bitmap("monster2.png");
+    inputBitmaps->world_map_mediumRes = al_load_bitmap("./Map/med.png");
+    inputBitmaps->world_map_highRes = al_load_bitmap("./Map/high.jpg");
+    inputBitmaps->world_map_lowRes = al_load_bitmap("./Map/earth.jpg");
 }
 
 void leng_playerImgInit(ALLEGRO_BITMAP *player_images[],int playerImagesNum){
@@ -125,6 +128,9 @@ void all_initialize(){
 
     //REMIND: This is for Meun fnction
     al_init_native_dialog_addon();
+
+    //random seed
+    srand(time(NULL));
 
     //Install joystick driver
     if(!al_install_joystick())  

@@ -23,6 +23,7 @@ int main() {
     int i,Level;
     int CD = 40;
     int monsterCD = 40;
+    int MapCD = 1;
     ying_loadingBitmap(&Bitmaps);                           //inital and Load Bitmaps.
     leng_playerImgInit(Bitmaps.player_images,playerImages); //inital and Load the Animation for Player.
     ying_loadingSound(&Sounds);                             //inital and Load Sound,Samples.
@@ -89,6 +90,9 @@ int main() {
                 world[Level-1].textAddress,&player,score,
                 world[Level-1].groundNum,world[Level-1].objectNum,world[Level-1].monsterNum,world[Level-1].textNum);
                 //al_draw_text(font_24, al_map_rgb(255, 0, 0), 100, 400, 0, "TEST");
+
+                Map(&camera,&player,&world[Level-1],&keyState,&joyState,&MapCD,&Bitmaps);
+
                 printf("%d\n",player.HP);
                 al_flip_display();
            
@@ -120,6 +124,9 @@ int main() {
     //al_destroy_bitmap(player_image);
     al_destroy_bitmap(Bitmaps.monster_image1);
     al_destroy_bitmap(Bitmaps.reward_image);
+    al_destroy_bitmap(Bitmaps.world_map_lowRes);
+    al_destroy_bitmap(Bitmaps.world_map_mediumRes);
+    al_destroy_bitmap(Bitmaps.world_map_highRes);
     al_destroy_event_queue(event_queue);
     al_destroy_sample_instance(Sounds.coin);
     al_destroy_sample_instance(Sounds.check);
