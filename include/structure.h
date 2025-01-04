@@ -59,13 +59,23 @@ typedef struct {
     int MaxHP;
 } Monster;
 
+typedef struct {
+    double x, y;
+    char *displayText;
+    ALLEGRO_FONT *font;
+} Text;
+
 #define playerImages 35
 typedef struct BITMAPS
 {
     ALLEGRO_BITMAP *chest_image;
+    ALLEGRO_BITMAP *chest_image2;
     ALLEGRO_BITMAP *reward_image;
     ALLEGRO_BITMAP *checkpoint_image;
+    ALLEGRO_BITMAP *checkpoint_image2;
     ALLEGRO_BITMAP *monster_image1; //if have another class of monster, please rename as monster_image2,etc...
+    ALLEGRO_BITMAP *monster_image2;
+    ALLEGRO_BITMAP *end_image;
 
     ALLEGRO_BITMAP *player_images[playerImages];
 }MKBitmap;
@@ -82,14 +92,13 @@ typedef struct world
     int objectNum;  //Number of Object in world
     Object *objectAddress;  //The memory address of object
 
+    int textNum;    //Number of Text in world
+    Text *textAddress;    //The memory address of text
+    
     MKBitmap *inputBitmaps;
 } mkworld;
 
-typedef struct {
-    double x, y;
-    char *displayText;
-    ALLEGRO_FONT *font;
-} Text;
+
 
 //ying_
 typedef struct CameraView
@@ -108,8 +117,12 @@ typedef struct CameraView
 typedef struct sound{
     ALLEGRO_SAMPLE *sample1;
     ALLEGRO_SAMPLE *sample2;
+    ALLEGRO_SAMPLE *sample3;
+    ALLEGRO_SAMPLE *sample4;
     ALLEGRO_SAMPLE_INSTANCE *check;
     ALLEGRO_SAMPLE_INSTANCE *coin;
+    ALLEGRO_SAMPLE_INSTANCE *laser;
+    ALLEGRO_SAMPLE_INSTANCE *chest;
     ALLEGRO_MIXER *mixer;
     ALLEGRO_VOICE *voice;
 }MKSample;
