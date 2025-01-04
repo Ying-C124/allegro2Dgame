@@ -47,6 +47,7 @@ void check_object_collision(Object object[], Player *player, int *score,int obje
             case 3:
                 if (!object[i].isHit && player->x < object[i].x + object[i].width && player->x + player->width > object[i].x &&
                     player->y < object[i].y + object[i].height && player->y + player->height > object[i].y && object[i].isVisible == true) {
+<<<<<<< HEAD
                     object[i].isHit = true;
                     object[i].isVisible = false;
                     if(object[i].audioTrigger == true){
@@ -61,6 +62,8 @@ void check_object_collision(Object object[], Player *player, int *score,int obje
             case 4:
                 if (!object[i].isHit && player->x < object[i].x + object[i].width && player->x + player->width > object[i].x &&
                     player->y < object[i].y + object[i].height && player->y + player->height > object[i].y && object[i].isVisible == true) {
+=======
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
                     object[i].isHit = true;
                     object[i].isVisible = false;
                     if(object[i].audioTrigger == true){

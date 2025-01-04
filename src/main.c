@@ -37,8 +37,38 @@ int main() {
     mkworld world[NUM_WORLDS];  //The World Data Will Save As a array and Structure.
     createWorld(world,NUM_WORLDS,&Bitmaps,&Sounds,font_16);  //Make the main.c more clear. We move it to "world_generate.c" file.
 
+<<<<<<< HEAD
     Player player = create_player(6300, 100, 100, 100, 40, 40, 6.0, 0, 1.0, 0, 0 ,false, Bitmaps.player_images[0],20,1,1,0,0,0);
     
+=======
+    Player player = create_player(4850, 100, 100, 100, 40, 40, 6.0, 0, 1.0, 0, 0 ,false, Bitmaps.player_images[0],20,1,1,0,0,0);
+    
+    Text texts1[]={
+        create_text(100,400,"Use arrow keys to move and jump",font_16),
+        create_text(700,400,"Pick up coin to get score",font_16),
+        create_text(1300,400,"Touch the flag to save checkpoint",font_16),
+        create_text(1640,570,"If you drop off",font_16),
+        create_text(1650,600,"the platform",font_16),
+        create_text(1640,630,"you will respawn",font_16),
+        create_text(1650,660,"at checkpoint",font_16),
+        create_text(2250,400,"Try to jump at the corner of the platform",font_16),
+        create_text(2850,300,"Attack by pressing D",font_16),
+        create_text(2950,350,"The red bar is the monster's HP",font_16),
+        create_text(4750,250,"Tips:You can just ignore the monsters",font_16),
+        create_text(4750,300,"but you will get lower score in the end",font_16),
+
+    };
+    Text texts2[]={
+        create_text(100,400,"2",font_16)
+    };
+    Text texts3[]={
+        create_text(100,400,"3",font_16)
+    };
+
+    int numTexts1 = sizeof(texts1) / sizeof(texts1[0]);
+    int numTexts2 = sizeof(texts2) / sizeof(texts2[0]);
+    int numTexts3 = sizeof(texts3) / sizeof(texts3[0]);
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
     
 
     ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();

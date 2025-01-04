@@ -16,7 +16,11 @@ void createWorld(mkworld world[],int worldNum,MKBitmap *inputBitmaps,MKSample *i
     world[i].groundNum = 15;
     world[i].groundAddress = malloc(sizeof(Ground)*world[i].groundNum);
     createGround1(world[i].groundAddress);
+<<<<<<< HEAD
     world[i].objectNum = 16;
+=======
+    world[i].objectNum = 15;
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
     world[i].objectAddress = malloc(sizeof(Object)*world[i].objectNum);
     createObject1(world[i].objectAddress,inputBitmaps,inputSamples);
     world[i].monsterNum = 8;
@@ -51,9 +55,12 @@ void createWorld(mkworld world[],int worldNum,MKBitmap *inputBitmaps,MKSample *i
     world[i].monsterNum = 5;
     world[i].monsterAddress = malloc(sizeof(Monster)*world[i].monsterNum);
     createMonster3(world[i].monsterAddress,inputBitmaps);
+<<<<<<< HEAD
     world[i].textNum = 4;
     world[i].textAddress = malloc(sizeof(Text)*world[i].textNum);
     createText3(world[i].textAddress,font_16);
+=======
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
 }
 
 void createGround1(Ground *inputGroundAddress){
@@ -86,10 +93,16 @@ void createObject1(Object *inputObjectAddress,MKBitmap *inputBitmaps,MKSample *i
     inputObjectAddress[9]=create_object(6400, 300, 35, 35, inputBitmaps->reward_image, 3, false, false, true, NULL,inputSamples->coin);
     inputObjectAddress[10]=create_object(6500, 300, 35, 35, inputBitmaps->reward_image, 3, false, false, true, NULL,inputSamples->coin);
     inputObjectAddress[11]=create_object(6600, 300, 35, 35, inputBitmaps->reward_image, 3, false, false, true, NULL,inputSamples->coin);
+<<<<<<< HEAD
     inputObjectAddress[12]=create_object(6400, 350, 35, 35, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[9],inputSamples->chest);
     inputObjectAddress[13]=create_object(6500, 350, 35, 35, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[10],inputSamples->chest);
     inputObjectAddress[14]=create_object(6600, 350, 35, 35, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[11],inputSamples->chest);
     inputObjectAddress[15]=create_object(8050, 450, 100, 100, inputBitmaps->end_image, 4, false, true, true, NULL,NULL);
+=======
+    inputObjectAddress[12]=create_object(6400, 350, 50, 50, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[9],inputSamples->chest);
+    inputObjectAddress[13]=create_object(6500, 350, 50, 50, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[10],inputSamples->chest);
+    inputObjectAddress[14]=create_object(6600, 350, 50, 50, inputBitmaps->chest_image, 2, false, true, true, &inputObjectAddress[11],inputSamples->chest);
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
 }
 void createMonster1(Monster *inputMonsterAddress,MKBitmap *inputBitmaps){
     inputMonsterAddress[0] = create_monster(3100, 450, 35, 50, 0, inputBitmaps->monster_image1, 1, 1, 0, false, true, 30);

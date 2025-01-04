@@ -19,7 +19,11 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
     new_verticalSpeed = player->verticalSpeed - player->g; 
     new_y = player->y - player->verticalSpeed;
     player->frame_count+=1;
+<<<<<<< HEAD
     printf("%f   %f\n",player->x,player->y);
+=======
+    // printf("%f   %f\n",player->x,player->y);
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
     //printf("%d  ",player->img_num);
     if (player->prev_key == 0 && (player->img_num > 12 && player->img_num <22)){
         player->img_num = 0;
@@ -57,7 +61,10 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
     // }
     player->image = player_image_tmp[player->img_num];
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
     //player->onGround = true;
     // Check collision with ground
     if ((al_key_down(keyState, ALLEGRO_KEY_UP))||(JoyState->button[0])) {
@@ -95,9 +102,16 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
     for (n = 0; n < num_objects; n++) {
         if(objects[n].typeID == 2){
             // Check TOP
+<<<<<<< HEAD
             if (new_x < objects[n].x + objects[n].width && new_x + player->width > objects[n].x &&
                 new_y < objects[n].y && new_y + player->height > objects[n].y) {
                 player->collisionVert = 5;
+=======
+            if ((new_x < objects[n].x + objects[n].width - ALLOW_STEP_RANGE && new_x + player->width > objects[n].x + ALLOW_STEP_RANGE )&&
+                (new_y < objects[n].y && new_y + player->height > objects[n].y)) {
+                player->collisionVert = 5;
+                printf("by:%lf,newY+HIGH:%lf,newY:%lf,vert:%lf\n",objects[n].y,new_y+player->height,new_y,new_verticalSpeed);
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
                 break;
             }
             // Check Bottom
@@ -106,6 +120,7 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
                 player->collisionVert = 6;
                 break;
             }
+<<<<<<< HEAD
             player->collisionVert = 0;
         }
     }                
@@ -125,7 +140,25 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
         
         objects[n].isHit =true;
     }
+=======
+>>>>>>> 6bccc3e230f03fdb7d0286c989dfaf0dbf144063
 
+            else player->collisionVert = 0;
+        }
+    }                
+    if (player->collisionVert == 5) {
+        new_verticalSpeed = 0;
+        //player->x = new_x;
+        new_y = objects[n].y - player->height;
+        player->onGround = true;
+    }
+    if (player->collisionVert == 6) {
+        new_verticalSpeed = 0;
+        //player->x = new_x;
+        new_y = objects[n].y + objects[n].height;
+        
+        objects[n].isHit =true;
+    }
 
     if (al_key_down(keyState, ALLEGRO_KEY_LEFT)||(JoyState->stick[0].axis[0]<-0.5)) {
         player->width = 40;
@@ -223,6 +256,12 @@ void move_player(Player *player, Ground grounds[], int num_grounds,Object object
     // printf("playerX:%f  playerY:%f\n",player->x,player->y);
     if(player->verticalSpeed != 0)
         player->onGround = false;
+
+    printf("%d,%lf,%lf,%lf,%lf\n",player->collisionVert,new_verticalSpeed,player->verticalSpeed,new_y,new_y+player->height);
+    // if(player->onGround == false)
+    //     printf("1");
+    // if(player->onGround == true)
+    //     printf("0");
 }
 
 void ying_attacking(Player *playerInput, mkworld* inputWorld , ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState, int *CD,ALLEGRO_BITMAP *inputplayerImage[], int* score,MKSample *inputSamples){
