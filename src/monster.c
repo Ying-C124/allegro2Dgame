@@ -14,7 +14,16 @@ void drawMonster(Monster monster) {
     rate = (double)monster.HP/(double)monster.MaxHP;
     al_draw_filled_rectangle((monster.x+monster.width/2)-45,(monster.y-45),(monster.x+monster.width/2)+45,(monster.y-25),al_map_rgb(100,100,100));    //畫血條背景
     al_draw_filled_rectangle((monster.x+monster.width/2)-40,(monster.y-40),(monster.x+monster.width/2)-40+80*rate,(monster.y-30),al_map_rgb(200,100,100));
-    if (monster.direction == 1) {
+    if (monster.direction == 1 && monster.typeID == 1) {
+         al_draw_scaled_bitmap(monster.image,
+                               0, 0,                                  // Source origin
+                               al_get_bitmap_width(monster.image),      // Source width
+                               al_get_bitmap_height(monster.image),     // Source height
+                               monster.x, monster.y,                     // Destination origin
+                               monster.width, monster.height,            // Destination width and height
+                               0); // 向右繪製小怪物
+    } 
+    else if ((monster.direction == 1 || monster.direction == -1) && monster.typeID == 2) {
          al_draw_scaled_bitmap(monster.image,
                                0, 0,                                  // Source origin
                                al_get_bitmap_width(monster.image),      // Source width
@@ -55,8 +64,18 @@ void moveMonster(Monster monsters[]){
                     monsters[i].direction *= -1; // 改變方向
                     monsters[i].moveCount = 0;   // 重置轉向時間
                 }
+                break;
             case 2:
-                
+                monsters[i].moveCount += 1; 
+
+                // 更新小怪物的位置
+                monsters[i].y += monsters[i].speed * monsters[i].direction;
+
+                // 檢查是否達到轉向間隔，如果達到則改變方向
+                if (monsters[i].moveCount >= 60) {
+                    monsters[i].direction *= -1; // 改變方向
+                    monsters[i].moveCount = 0;   // 重置轉向時間
+                }
                 break;
         }
     }

@@ -3,10 +3,13 @@
 //These program is wrote by ** 和 **, 我只負責把其整合成一結構方便整理
 void ying_loadingBitmap(MKBitmap *inputBitmaps){
     int monsterClassNum=1;
-    inputBitmaps->checkpoint_image = al_load_bitmap("chest.png");
+    inputBitmaps->chest_image = al_load_bitmap("chest.png");
     inputBitmaps->reward_image = al_load_bitmap("reward.png");
     inputBitmaps->checkpoint_image = al_load_bitmap("checkpoint.png");
+    inputBitmaps->checkpoint_image2 = al_load_bitmap("checkpoint2.png");
+    inputBitmaps->end_image = al_load_bitmap("end.png");
     inputBitmaps->monster_image1 = al_load_bitmap("monster1.png");
+    inputBitmaps->monster_image2 = al_load_bitmap("monster2.png");
 }
 
 void leng_playerImgInit(ALLEGRO_BITMAP *player_images[],int playerImagesNum){

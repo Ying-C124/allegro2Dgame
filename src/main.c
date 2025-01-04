@@ -31,33 +31,14 @@ int main() {
     
 
     printf("level:");
-    scanf("%d",&Level);
+    // scanf("%d",&Level);
+    Level = 1;
 
     mkworld world[NUM_WORLDS];  //The World Data Will Save As a array and Structure.
-    createWorld(world,NUM_WORLDS,&Bitmaps,&Sounds);  //Make the main.c more clear. We move it to "world_generate.c" file.
+    createWorld(world,NUM_WORLDS,&Bitmaps,&Sounds,font_16);  //Make the main.c more clear. We move it to "world_generate.c" file.
 
-    Player player = create_player(100, 100, 100, 100, 40, 40, 6.0, 0, 1.0, 0, 0 ,false, Bitmaps.player_images[0],20,1,1,0,0,0);
+    Player player = create_player(6300, 100, 100, 100, 40, 40, 6.0, 0, 1.0, 0, 0 ,false, Bitmaps.player_images[0],20,1,1,0,0,0);
     
-    Text texts1[]={
-        create_text(100,400,"Use arrow keys to move and jump",font_16),
-        create_text(700,400,"Pick up coin to get score",font_16),
-        create_text(1300,400,"Touch the flag to save checkpoint",font_16),
-        create_text(1640,570,"If you drop off",font_16),
-        create_text(1650,600,"the platform",font_16),
-        create_text(1640,630,"you will respawn",font_16),
-        create_text(1650,660,"at checkpoint",font_16),
-        create_text(2250,400,"Try to jump at the corner of the platform",font_16)
-    };
-    Text texts2[]={
-        create_text(100,400,"2",font_16)
-    };
-    Text texts3[]={
-        create_text(100,400,"3",font_16)
-    };
-
-    int numTexts1 = sizeof(texts1) / sizeof(texts1[0]);
-    int numTexts2 = sizeof(texts2) / sizeof(texts2[0]);
-    int numTexts3 = sizeof(texts3) / sizeof(texts3[0]);
     
 
     ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
@@ -95,16 +76,16 @@ int main() {
             else{
                 ying_joystickFillZero(&joyState);
             }
-    
+                
                 al_clear_to_color(al_map_rgb(0, 0, 0));  
-                move_player(&player, world[Level-1].groundAddress, world[Level-1].groundNum, &keyState , &joyState, Bitmaps.player_images);
-                check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum);
+                move_player(&player, world[Level-1].groundAddress, world[Level-1].groundNum, world[Level-1].objectAddress, world[Level-1].objectNum, &keyState , &joyState, Bitmaps.player_images);
+                check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum,&Bitmaps);
                 moveMonster(world[Level-1].monsterAddress);
-                ying_attacking(&player,&world[Level-1] ,&keyState,&joyState,&CD,Bitmaps.player_images);
+                ying_attacking(&player,&world[Level-1] ,&keyState,&joyState,&CD,Bitmaps.player_images,&score,&Sounds);
                 ying_updateCamera(&player,&camera);
                 ying_renderWorld(&camera,world[Level-1].groundAddress,world[Level-1].objectAddress,world[Level-1].monsterAddress,
-                texts1,&player,score,
-                world[Level-1].groundNum,world[Level-1].objectNum,world[Level-1].monsterNum,numTexts1);
+                world[Level-1].textAddress,&player,score,
+                world[Level-1].groundNum,world[Level-1].objectNum,world[Level-1].monsterNum,world[Level-1].textNum);
                 //al_draw_text(font_24, al_map_rgb(255, 0, 0), 100, 400, 0, "TEST");
                 al_flip_display();
            
