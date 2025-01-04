@@ -11,16 +11,16 @@ Player create_player(double x, double y, double checkpoint_x,double checkpoint_y
     return player;
 }
 
-void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState,ALLEGRO_BITMAP *player_image_tmp[]) {
+void move_player(Player *player, Ground grounds[], int num_grounds,Object objects[], int num_objects, ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState,ALLEGRO_BITMAP *player_image_tmp[]) {
     double new_x = player->x;
     double new_y = player->y;
     double new_verticalSpeed = player->verticalSpeed;
-    int i,j,num;
+    int i,j,num,m,n;
     new_verticalSpeed = player->verticalSpeed - player->g; 
     new_y = player->y - player->verticalSpeed;
     player->frame_count+=1;
-
-    printf("%d  ",player->img_num);
+    // printf("%f   %f\n",player->x,player->y);
+    //printf("%d  ",player->img_num);
     if (player->prev_key == 0 && (player->img_num > 12 && player->img_num <22)){
         player->img_num = 0;
     }
@@ -30,29 +30,33 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
         player->img_num += 1;
         //num = player->img_num;
         // printf("%d",num);
-        
-        if(player->img_num == 12){
-            player->img_num = 0;
-        }
-        else if(player->img_num == 21){
-            player->img_num = 13;
-        }
-        else if(player->img_num >= 22 && player->img_num < 35){
-            player->width = 115;
-            player->image = player_image_tmp[player->img_num];
-            player->img_num += 1;
-            return;
-        }
-        else if(player->img_num == 35||player->img_num == 36){
+    }   
+    if(player->img_num == 12){
+        player->img_num = 0;
+    }
+    else if(player->img_num == 21){
+        player->img_num = 13;
+    }
+    else if(player->img_num >= 22 && player->img_num < 33){
+        player->width = 115;
+        player->image = player_image_tmp[player->img_num];
+        player->img_num += 1;
+        if(player->img_num == 34||player->img_num == 35){
             player->img_num = 0;
             player->width = 40;
         }
-        // if(player->img_num == 11){
-        //     player->img_num = 0;
-        // }
-        player->image = player_image_tmp[player->img_num];
-        
+        return;
     }
+    if(player->img_num == 34||player->img_num == 35){
+        player->img_num = 0;
+        player->width = 40;
+    }
+    
+    // if(player->img_num == 11){
+    //     player->img_num = 0;
+    // }
+    player->image = player_image_tmp[player->img_num];
+    
     //player->onGround = true;
     // Check collision with ground
     if ((al_key_down(keyState, ALLEGRO_KEY_UP))||(JoyState->button[0])) {
@@ -75,7 +79,7 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
             break;
         }
         player->collisionVert = 0;
-    }        
+    }
     if (player->collisionVert == 1) {
         new_verticalSpeed = 0;;
         //player->x = new_x;
@@ -87,7 +91,38 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
         //player->x = new_x;
         new_y = grounds[j].y + grounds[j].height;
     }
+    for (n = 0; n < num_objects; n++) {
+        if(objects[n].typeID == 2){
+            // Check TOP
+            if ((new_x < objects[n].x + objects[n].width - ALLOW_STEP_RANGE && new_x + player->width > objects[n].x + ALLOW_STEP_RANGE )&&
+                (new_y < objects[n].y && new_y + player->height > objects[n].y)) {
+                player->collisionVert = 5;
+                printf("by:%lf,newY+HIGH:%lf,newY:%lf,vert:%lf\n",objects[n].y,new_y+player->height,new_y,new_verticalSpeed);
+                break;
+            }
+            // Check Bottom
+            if (new_x < objects[n].x + objects[n].width && new_x + player->width > objects[n].x &&
+                new_y < objects[n].y + objects[n].height && new_y + player->height > objects[n].y + objects[n].height) {
+                player->collisionVert = 6;
+                break;
+            }
 
+            else player->collisionVert = 0;
+        }
+    }                
+    if (player->collisionVert == 5) {
+        new_verticalSpeed = 0;
+        //player->x = new_x;
+        new_y = objects[n].y - player->height;
+        player->onGround = true;
+    }
+    if (player->collisionVert == 6) {
+        new_verticalSpeed = 0;
+        //player->x = new_x;
+        new_y = objects[n].y + objects[n].height;
+        
+        objects[n].isHit =true;
+    }
 
     if (al_key_down(keyState, ALLEGRO_KEY_LEFT)||(JoyState->stick[0].axis[0]<-0.5)) {
         player->width = 40;
@@ -140,6 +175,37 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
         player->walkingStatus = false;
         //player->y = new_y;
     }
+    for (m = 0; m < num_objects; m++) {
+        if(objects[m].typeID == 2){
+            // Check LEFT
+            if (new_x < objects[m].x && new_x + player->width > objects[m].x &&
+                new_y < objects[m].y + objects[m].height && new_y + player->height > objects[m].y) {
+                player->collisionHorizon = 7;
+                break;
+            }
+            // Check RIGHT
+            if (new_x < objects[m].x + objects[m].width && new_x + player->width > objects[m].x + objects[m].width &&
+                new_y < objects[m].y + objects[m].height && new_y + player->height > objects[m].y) {
+                player->collisionHorizon = 8;
+                break;
+            }
+            player->collisionHorizon = 0;
+        }
+    }
+    
+    if (player->collisionHorizon == 7) {
+        //new_verticalSpeed = player->verticalSpeed - player->g;
+        new_x = objects[m].x - player->width;
+        player->walkingStatus = false;
+        //player->y = new_y;
+    }
+
+    if (player->collisionHorizon == 8) {
+        //new_verticalSpeed = player->verticalSpeed - player->g;
+        new_x = objects[m].x + objects[m].width;
+        player->walkingStatus = false;
+        //player->y = new_y;
+    }
 
     if(new_y > (-WORLD_HEIGHT))
     {
@@ -154,35 +220,51 @@ void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYB
     // printf("playerX:%f  playerY:%f\n",player->x,player->y);
     if(player->verticalSpeed != 0)
         player->onGround = false;
+
+    printf("%d,%lf,%lf,%lf,%lf\n",player->collisionVert,new_verticalSpeed,player->verticalSpeed,new_y,new_y+player->height);
+    // if(player->onGround == false)
+    //     printf("1");
+    // if(player->onGround == true)
+    //     printf("0");
 }
 
-void ying_attacking(Player *playerInput, mkworld* inputWorld , ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState, int *CD,ALLEGRO_BITMAP *inputplayerImage[]){
+void ying_attacking(Player *playerInput, mkworld* inputWorld , ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState, int *CD,ALLEGRO_BITMAP *inputplayerImage[], int* score,MKSample *inputSamples){
     Monster *MonsterPtr;
     MonsterPtr = inputWorld->monsterAddress;
         *CD -=1;
         if (*CD<0)
             *CD = 0;
-        printf("%d\n",*CD);
+        //printf("%d\n",*CD);
         if((al_key_down(keyState,ALLEGRO_KEY_D)||JoyState->button[1])&&*CD == 0){
             int k;
             *CD = 40;
             playerInput->width = 115;
             playerInput->img_num = 22;
             playerInput->image = inputplayerImage[22];
-            for(k=0;k<NUM_MONSTERS;k++){
+            al_set_sample_instance_playing(inputSamples->laser, true);
+            for(k=0;k<inputWorld[0].monsterNum;k++){
                 if(playerInput->directionStatus == 0){ //玩家向右
-                    if((MonsterPtr[k].x>playerInput->x+playerInput->width && (MonsterPtr[k].x < playerInput->x+playerInput->width + ATTACK_RANGE)
-                    && (MonsterPtr[k].y + MonsterPtr[k].height <= playerInput->y + playerInput->height)  )){
+                    if((MonsterPtr[k].x+MonsterPtr[k].width>playerInput->x+54) && (MonsterPtr[k].x < playerInput->x+playerInput->width)
+                    && (MonsterPtr[k].y + MonsterPtr[k].height >= playerInput->y+2) &&(MonsterPtr[k].y <= playerInput->y+19)){
                         if(playerInput->attackingStatus == 0){
                             MonsterPtr[k].HP -= ATTACK_PER_LV * playerInput->LV;
-                            printf("HITR!\n");
+                            if(MonsterPtr[k].HP<=0 && MonsterPtr[k].isVisible == true){
+                                MonsterPtr[k].isVisible = false;
+                                *score += 2;
+                            }
                         } 
                     }
                 }
                 else{
-                    if((MonsterPtr[k].x + MonsterPtr[k].width < playerInput->x) && (MonsterPtr[k].x + MonsterPtr[k].width >playerInput->x - ATTACK_RANGE)){
-                        printf("HITL!\n");
-                        if(playerInput->attackingStatus == 0) MonsterPtr[k].HP -= ATTACK_PER_LV * playerInput->LV;
+                    if((MonsterPtr[k].x+MonsterPtr[k].width>playerInput->x-75) && (MonsterPtr[k].x < playerInput->x+playerInput->width-129)
+                    && (MonsterPtr[k].y + MonsterPtr[k].height >= playerInput->y+2)&&(MonsterPtr[k].y <= playerInput->y+19)){
+                        if(playerInput->attackingStatus == 0){
+                            MonsterPtr[k].HP -= ATTACK_PER_LV * playerInput->LV;
+                            if(MonsterPtr[k].HP<=0&& MonsterPtr[k].isVisible == true){
+                                MonsterPtr[k].isVisible = false;
+                                *score += 2;
+                            }
+                        }
                     }
                 }
             }

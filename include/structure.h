@@ -65,7 +65,9 @@ typedef struct BITMAPS
     ALLEGRO_BITMAP *chest_image;
     ALLEGRO_BITMAP *reward_image;
     ALLEGRO_BITMAP *checkpoint_image;
+    ALLEGRO_BITMAP *checkpoint_image2;
     ALLEGRO_BITMAP *monster_image1; //if have another class of monster, please rename as monster_image2,etc...
+    ALLEGRO_BITMAP *monster_image2;
 
     ALLEGRO_BITMAP *player_images[playerImages];
 }MKBitmap;
@@ -108,8 +110,12 @@ typedef struct CameraView
 typedef struct sound{
     ALLEGRO_SAMPLE *sample1;
     ALLEGRO_SAMPLE *sample2;
+    ALLEGRO_SAMPLE *sample3;
+    ALLEGRO_SAMPLE *sample4;
     ALLEGRO_SAMPLE_INSTANCE *check;
     ALLEGRO_SAMPLE_INSTANCE *coin;
+    ALLEGRO_SAMPLE_INSTANCE *laser;
+    ALLEGRO_SAMPLE_INSTANCE *chest;
     ALLEGRO_MIXER *mixer;
     ALLEGRO_VOICE *voice;
 }MKSample;

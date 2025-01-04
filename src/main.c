@@ -31,12 +31,13 @@ int main() {
     
 
     printf("level:");
-    scanf("%d",&Level);
+    // scanf("%d",&Level);
+    Level = 1;
 
     mkworld world[NUM_WORLDS];  //The World Data Will Save As a array and Structure.
     createWorld(world,NUM_WORLDS,&Bitmaps,&Sounds);  //Make the main.c more clear. We move it to "world_generate.c" file.
 
-    Player player = create_player(100, 100, 100, 100, 40, 40, 6.0, 0, 1.0, 0, 0 ,false, Bitmaps.player_images[0],20,1,1,0,0,0);
+    Player player = create_player(4850, 100, 100, 100, 40, 40, 6.0, 0, 1.0, 0, 0 ,false, Bitmaps.player_images[0],20,1,1,0,0,0);
     
     Text texts1[]={
         create_text(100,400,"Use arrow keys to move and jump",font_16),
@@ -46,7 +47,12 @@ int main() {
         create_text(1650,600,"the platform",font_16),
         create_text(1640,630,"you will respawn",font_16),
         create_text(1650,660,"at checkpoint",font_16),
-        create_text(2250,400,"Try to jump at the corner of the platform",font_16)
+        create_text(2250,400,"Try to jump at the corner of the platform",font_16),
+        create_text(2850,300,"Attack by pressing D",font_16),
+        create_text(2950,350,"The red bar is the monster's HP",font_16),
+        create_text(4750,250,"Tips:You can just ignore the monsters",font_16),
+        create_text(4750,300,"but you will get lower score in the end",font_16),
+
     };
     Text texts2[]={
         create_text(100,400,"2",font_16)
@@ -97,10 +103,10 @@ int main() {
             }
     
                 al_clear_to_color(al_map_rgb(0, 0, 0));  
-                move_player(&player, world[Level-1].groundAddress, world[Level-1].groundNum, &keyState , &joyState, Bitmaps.player_images);
-                check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum);
+                move_player(&player, world[Level-1].groundAddress, world[Level-1].groundNum, world[Level-1].objectAddress, world[Level-1].objectNum, &keyState , &joyState, Bitmaps.player_images);
+                check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum,&Bitmaps);
                 moveMonster(world[Level-1].monsterAddress);
-                ying_attacking(&player,&world[Level-1] ,&keyState,&joyState,&CD,Bitmaps.player_images);
+                ying_attacking(&player,&world[Level-1] ,&keyState,&joyState,&CD,Bitmaps.player_images,&score,&Sounds);
                 ying_updateCamera(&player,&camera);
                 ying_renderWorld(&camera,world[Level-1].groundAddress,world[Level-1].objectAddress,world[Level-1].monsterAddress,
                 texts1,&player,score,
