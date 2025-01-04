@@ -40,5 +40,6 @@
 #define ATTACK_RANGE 150
 #define ATTACK_ANIME_TIME 5
 #define ATTACK_PER_LV 5
+#define ALLOW_STEP_RANGE 2
 
 #endif 
