@@ -29,6 +29,7 @@ typedef struct {
     int frame_count;
     int prev_key;
     int MaxHP;
+    bool MapEnable;
 } Player;
 
 

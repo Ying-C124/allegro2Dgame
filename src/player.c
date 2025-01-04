@@ -7,7 +7,7 @@ Player create_player(double x, double y, double checkpoint_x,double checkpoint_y
     maxHP = HP;
     Player player = {x, y, checkpoint_x, checkpoint_y, width, height, horizonSpeed,
      verticalSpeed, g, collisionHorizon, collisionVert, onGround, 0 , 0 , 1, image,
-     20 , 1,1 ,direction,img_num ,frame_count,prev_key , maxHP};
+     20 , 1,1 ,direction,img_num ,frame_count,prev_key , maxHP ,0};
     return player;
 }
 
