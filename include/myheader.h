@@ -34,9 +34,9 @@ void draw_player(Player player);
 void draw_ground(Ground ground);
 void drawMonster(Monster monster);
 
-void move_player(Player *player, Ground grounds[], int num_grounds, ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState,ALLEGRO_BITMAP *player_image_tmp[]);
+void move_player(Player *player, Ground grounds[], int num_grounds,Object objects[], int num_objects, ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState,ALLEGRO_BITMAP *player_image_tmp[]);
 void moveMonster(Monster monsters[]);
-void check_object_collision(Object object[], Player *player, int *score,int objectNum);
+void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps);
 
 //all_
 void all_initialize();
@@ -63,7 +63,7 @@ void ying_joystickFillZero(ALLEGRO_JOYSTICK_STATE *joyState);
 void ying_hotplug_detection(ALLEGRO_EVENT *events,ALLEGRO_JOYSTICK *joystick,bool *joystickBool);
 
 //ying_attack
-void ying_attacking(Player *playerInput, mkworld* inputWorld , ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState, int *CD,ALLEGRO_BITMAP *inputplayerImage[]);
+void ying_attacking(Player *playerInput, mkworld* inputWorld , ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState, int *CD,ALLEGRO_BITMAP *inputplayerImage[], int* score,MKSample *inputSamples);
 
 
 ALLEGRO_SAMPLE_INSTANCE *createSound(ALLEGRO_SAMPLE *sample,ALLEGRO_MIXER *mixer,ALLEGRO_VOICE *voice);
@@ -72,17 +72,20 @@ void ying_loadingBitmap(MKBitmap *inputBitmaps);
 void ying_loadingSound(MKSample *inputSounds);
 void ying_InitMenu(MKMenu *inputMenu,ALLEGRO_DISPLAY *inputDisplay);
 
-void createWorld(mkworld world[],int worldNum,MKBitmap *inputBitmaps,MKSample *inputSamples);
+void createWorld(mkworld world[],int worldNum,MKBitmap *inputBitmaps,MKSample *inputSamples, ALLEGRO_FONT *font_16);
 
 void createGround1(Ground *inputGroundAddress);
 void createObject1(Object *inputObjectAddress,MKBitmap *inputBitmaps,MKSample *inputSamples);
 void createMonster1(Monster *inputMonsterAddress,MKBitmap *inputBitmaps);
+void createText1(Text *inputTextAddress ,ALLEGRO_FONT *font_16);
 void createGround2(Ground *inputGroundAddress);
 void createObject2(Object *inputObjectAddress,MKBitmap *inputBitmaps,MKSample *inputSamples);
 void createMonster2(Monster *inputMonsterAddress,MKBitmap *inputBitmaps);
+void createText2(Text *inputTextAddress ,ALLEGRO_FONT *font_16);
 void createGround3(Ground *inputGroundAddress);
 void createObject3(Object *inputObjectAddress,MKBitmap *inputBitmaps,MKSample *inputSamples);
 void createMonster3(Monster *inputMonsterAddress,MKBitmap *inputBitmaps);
+void createText3(Text *inputTextAddress ,ALLEGRO_FONT *font_16);
 
 void releaseMemory(mkworld inputworld[],MKMenu *inputMenu);
 
