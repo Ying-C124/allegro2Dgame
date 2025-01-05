@@ -14,8 +14,10 @@ int main() {
     ALLEGRO_DISPLAY *display = al_create_display(resolutionWidth, resolutionHeigth);
     ALLEGRO_TIMER *timer = al_create_timer(0.016);
     ALLEGRO_FONT *font_16 = al_load_ttf_font("./score.TTC", 16, 0);
+    ALLEGRO_FONT *font_48 = al_load_ttf_font("./score.TTC", 48, 0);
     ALLEGRO_KEYBOARD_STATE keyState;
     ALLEGRO_JOYSTICK_STATE joyState;
+    ALLEGRO_MOUSE_STATE mouseState;
     ALLEGRO_JOYSTICK* joy1 = al_get_joystick(0);
     bool joyStickPluged = false;    //The bool for Check did jotstick install?
     bool Active = true;
@@ -24,6 +26,9 @@ int main() {
     int CD = 40;
     int monsterCD = 40;
     int MapCD = 1;
+    char name[16]={"TAILED"};
+    bool menu_active = true,level_2_unlock = false,level_3_unlock = false,create = false;
+    int button_state = 0;
     ying_loadingBitmap(&Bitmaps);                           //inital and Load Bitmaps.
     leng_playerImgInit(Bitmaps.player_images,playerImages); //inital and Load the Animation for Player.
     ying_loadingSound(&Sounds);                             //inital and Load Sound,Samples.
@@ -31,10 +36,17 @@ int main() {
     al_set_window_title(display,"A New World!");
     //sample1 = al_load_sample("./pickup01.mp3");
     
+    Node Scorehead ;
+    strncpy(Scorehead.name,name,sizeof(name)-1);
+    Scorehead.score = 0;
+    Scorehead.nextPtr = NULL;
 
-    printf("level:");
+    load_score(&Scorehead);
+    printf("%s\t%d\n",Scorehead.name,Scorehead.score);
+
+    printf("level:\n");
     // scanf("%d",&Level);
-    Level = 2;
+    Level = 1;
 
     mkworld world[NUM_WORLDS];  //The World Data Will Save As a array and Structure.
     createWorld(world,NUM_WORLDS,&Bitmaps,&Sounds,font_16);  //Make the main.c more clear. We move it to "world_generate.c" file.
@@ -65,10 +77,55 @@ int main() {
     //Inital Camera
     ying_setCamera(&camera,(double)resolutionWidth,(double)resolutionHeigth);
 
+    //EnterName Must after than setCamera;
+    EnterName(name,&keyState,&ev,event_queue,&camera,font_16);
+
     while (Active) {
         al_wait_for_event(event_queue, &ev);
         ying_hotplug_detection(&ev,joy1,&joyStickPluged);
-        if (ev.type == ALLEGRO_EVENT_TIMER){
+        if (menu_active == true){
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            al_get_mouse_state(&mouseState);
+            //////
+            // if(button_state == 0)
+            //     button_state = openMenu(&camera,&menu_active,&mouseState,font_48);
+            // else if(button_state == 1){
+            //     button_state = openMenu2(&camera,&menu_active,&mouseState,font_48,&level_2_unlock,&level_3_unlock);
+            //     if(button_state == 5){
+            //         menu_active = false;
+            //         Level = 1;
+            //     }
+            //     else if(button_state == 6){
+            //         menu_active = false;
+            //         Level = 2;
+            //     }
+            //     else if(button_state == 7){
+            //         menu_active = false;
+            //         Level = 3;
+            //     }    
+            // }
+            //////
+            create = menuLogic(&player,&button_state,&Level,&camera,&menu_active,&mouseState,font_48,&level_2_unlock,&level_3_unlock,&score);
+            if (create == true){
+                createWorld(world,NUM_WORLDS,&Bitmaps,&Sounds,font_16);
+                create == false;
+            }
+            //////
+            al_flip_display();
+            if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) 
+                break;
+            else if(ev.type == ALLEGRO_EVENT_MENU_CLICK){
+                i = ying_MenuDecoder(&ev);
+                if(i == 0){
+                    ying_Resoultion(&resolutionWidth,&resolutionHeigth,ev.user.data1,&camera,display);
+                }
+                else if(i == 1){
+                    ying_GameMenu(&ev,&player,&Active,&Level,&menu_active,&button_state);
+                }
+                /*Reserve for External Function in Future*/
+            }
+        }    
+        else if (ev.type == ALLEGRO_EVENT_TIMER){
             al_get_keyboard_state(&keyState);
 
             //Joystick Signal, If No Joystick plugin, Fill zero to Output;
@@ -81,9 +138,9 @@ int main() {
                 
                 al_clear_to_color(al_map_rgb(0, 0, 0));  
                 move_player(&player, world[Level-1].groundAddress, world[Level-1].groundNum, world[Level-1].objectAddress, world[Level-1].objectNum, &keyState , &joyState, Bitmaps.player_images);
-                check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum,&Bitmaps);
+                check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum,&Bitmaps,&Level,&level_2_unlock,&level_3_unlock);
                 moveMonster(world[Level-1].monsterAddress,world[Level-1].monsterNum);
-                monsterCollision(world[Level-1].monsterAddress,&player,&monsterCD,world[Level-1].monsterNum);
+                monsterCollision(world[Level-1].monsterAddress,&player,&monsterCD,world[Level-1].monsterNum,&score);
                 ying_attacking(&player,&world[Level-1] ,&keyState,&joyState,&CD,Bitmaps.player_images,&score,&Sounds);
                 ying_updateCamera(&player,&camera);
                 ying_renderWorld(&camera,world[Level-1].groundAddress,world[Level-1].objectAddress,world[Level-1].monsterAddress,
@@ -106,7 +163,7 @@ int main() {
                 ying_Resoultion(&resolutionWidth,&resolutionHeigth,ev.user.data1,&camera,display);
             }
             else if(i == 1){
-                ying_GameMenu(&ev,&player,&Active,&Level);
+                ying_GameMenu(&ev,&player,&Active,&Level,&menu_active,&button_state);
             }
             /*Reserve for External Function in Future*/
         }
@@ -114,8 +171,12 @@ int main() {
             break;
         }
     }
+    
     //Release the data in memory.
     al_destroy_display(display);
+    insert(&Scorehead,name,score);
+    printf("%s\t%d\n",Scorehead.name,Scorehead.score);
+    save_score(&Scorehead);
 
     releaseMemory(world,&Menus);
 

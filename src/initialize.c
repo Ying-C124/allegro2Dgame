@@ -125,6 +125,7 @@ void all_initialize(){
     al_install_audio();
     al_init_acodec_addon();
     al_init_ttf_addon();
+    al_install_mouse();
 
     //REMIND: This is for Meun fnction
     al_init_native_dialog_addon();

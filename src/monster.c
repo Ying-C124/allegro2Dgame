@@ -80,8 +80,7 @@ void moveMonster(Monster monsters[],int numMonsters){
         }
     }
 }
-
-void monsterCollision(Monster monsters[],Player *player,int *monsterCD,int numMonsters){
+void monsterCollision(Monster monsters[],Player *player,int *monsterCD,int numMonsters,int *score){
     int i;
     *monsterCD -= 1;
     if(*monsterCD < 0){
@@ -96,7 +95,10 @@ void monsterCollision(Monster monsters[],Player *player,int *monsterCD,int numMo
         }         
     }
     if(player->HP<= 0){
-
+        player->x = player->checkpoint_x;
+        player->y = player->checkpoint_y;
+        *score -= 5;
+        player->HP=player->MaxHP;
     }
 }
 

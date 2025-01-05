@@ -1,0 +1,7 @@
+CAWD            	8
+ASCF            	5
+AWFD            	4
+ASCZXC            	3
+ETSFD            	2
+ADSAF            	1
+zero            	0

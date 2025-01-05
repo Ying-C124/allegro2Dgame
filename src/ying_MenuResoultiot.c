@@ -56,7 +56,7 @@ void ying_Resoultion(int *nativeWidth, int *nativeHeigth, int inputMenuID,Camera
     inputCamera->cameraHeight = settingHeigth;
 }
 
-void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel){
+void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel,bool* menu_active,int* button_state){
     if(ev->user.data1 ==SAVE_SCORE){
         printf("Save_Score\n");
     }
@@ -68,7 +68,8 @@ void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *
         inputPlayer->y=inputPlayer->checkpoint_y;
     }
     else if(ev->user.data1 ==BACK_TO_MENU){
-        printf("BACK_TO_MENU\n");
+        *menu_active = true;
+        *button_state = 0;
     }
     else if(ev->user.data1 ==EXIT_ID){
         *inputActive = false;

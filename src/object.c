@@ -6,7 +6,7 @@ Object create_object(double x, double y, double width, double height, ALLEGRO_BI
 }
 
 
-void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps) {
+void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps,int* level,bool* level_2_unlock,bool* level_3_unlock) {
     int i,j;
     for(i = 0; i<=objectNum; i++)
     {
@@ -64,11 +64,17 @@ void check_object_collision(Object object[], Player *player, int *score,int obje
                     player->y < object[i].y + object[i].height && player->y + player->height > object[i].y && object[i].isVisible == true) {
                     object[i].isHit = true;
                     object[i].isVisible = false;
-                    if(object[i].audioTrigger == true){
-                        al_set_sample_instance_playing(object[i].audio, false);
-                        al_set_sample_instance_playing(object[i].audio, true);
-                        object[i].audioTrigger = false;
-                        *score +=1;
+                    *level +=1;
+                    player->x = 100;
+                    player->y = 100;
+                    player->checkpoint_x = 100;
+                    player->checkpoint_y = 100;
+                    player->HP = 20;
+                    if(*level ==2){
+                        *level_2_unlock = true;
+                    }
+                    else if(*level == 3){
+                        *level_3_unlock = true;
                     }
                 }
                 break;

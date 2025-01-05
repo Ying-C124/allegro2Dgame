@@ -26,10 +26,10 @@
 #define LEVEL3 2333
 
 // Define constants
-#define NUM_GROUNDS 20
-#define NUM_OBJECTS 9
-#define NUM_MONSTERS 20
-#define NUM_TEXTS 8
+// #define NUM_GROUNDS 20
+// #define NUM_OBJECTS 9
+// #define NUM_MONSTERS 20
+// #define NUM_TEXTS 8
 #define NUM_WORLDS 3
 //世界的邊緣，可能需要程式嫁接
 #define WORLD_WIDTH 100500
@@ -40,6 +40,9 @@
 #define ATTACK_RANGE 150
 #define ATTACK_ANIME_TIME 5
 #define ATTACK_PER_LV 5
-#define ALLOW_STEP_RANGE 2
+// #define ALLOW_STEP_RANGE 2
+
+#define SCORE_FILE "scores.txt"
+#define TOP_N 5
 
 #endif 

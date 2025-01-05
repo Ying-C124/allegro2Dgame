@@ -33,10 +33,10 @@ Text create_text(double x, double y,char displayText[],ALLEGRO_FONT* font);
 void draw_player(Player player);
 void draw_ground(Ground ground);
 void drawMonster(Monster monster);
-void monsterCollision(Monster monsters[],Player *player,int *monsterCD,int numMonsters);
+void monsterCollision(Monster monsters[],Player *player,int *monsterCD,int numMonsters,int *score);
 void move_player(Player *player, Ground grounds[], int num_grounds,Object objects[], int num_objects, ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState,ALLEGRO_BITMAP *player_image_tmp[]);
 void moveMonster(Monster monsters[],int numMonsters);
-void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps);
+void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps,int* level,bool* level_2_unlock,bool* level_3_unlock);
 
 //all_
 void all_initialize();
@@ -53,7 +53,7 @@ void ying_renderWorld(Camera* cameraInput,Ground groundInputs[], Object objectIn
 //ying_MenuResolution
 int ying_MenuDecoder(ALLEGRO_EVENT *ev);
 void ying_Resoultion(int *nativeWidth, int *nativeHeigth, int inputMenuID ,Camera *inputCamera, ALLEGRO_DISPLAY* inputDisplay);
-void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel);
+void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel,bool* menu_active,int* button_state);
 void ying_ResetPlayerLocal(Player *inputPlayer);
 
 //ying_joystick
@@ -90,5 +90,17 @@ void createMonster3(Monster *inputMonsterAddress,MKBitmap *inputBitmaps);
 void createText3(Text *inputTextAddress ,ALLEGRO_FONT *font_16);
 
 void releaseMemory(mkworld inputworld[],MKMenu *inputMenu);
+
+int openMenu(Player *playerInput,Camera* cameraInput,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48,int *score);
+int openMenu2(Player *playerInput,Camera* cameraInput,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48,bool* level_2_unlock,bool* level_3_unlock,int *score);
+int openMenu3(Camera* cameraInput,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48);
+bool menuLogic(Player *playerInput,int* button_state,int* Level,Camera* camera,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48,bool* level_2_unlock,bool* level_3_unlock,int *score);
+
+void insert( Node *sPtr, char value[] ,int score);
+void save_score(Node *inputNode);
+void free_list(NodePtr *sPtr);
+void load_score(Node *sPtr);
+void EnterName(char inputName[16] , ALLEGRO_KEYBOARD_STATE *keyState , ALLEGRO_EVENT *ev, ALLEGRO_EVENT_QUEUE *event_queue,Camera *cameraInput,ALLEGRO_FONT *font_16);
+
 
 #endif /* _MYHEADER_H_ */

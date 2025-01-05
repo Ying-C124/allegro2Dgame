@@ -142,5 +142,12 @@ typedef struct menu{
 
 }MKMenu;
 
+typedef struct Node {
+    char name[16];
+    int score;
+    struct Node *nextPtr;
+} Node;
+
+typedef Node *NodePtr;
 
 #endif 
