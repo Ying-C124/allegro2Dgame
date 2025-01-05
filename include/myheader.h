@@ -89,12 +89,12 @@ void createObject3(Object *inputObjectAddress,MKBitmap *inputBitmaps,MKSample *i
 void createMonster3(Monster *inputMonsterAddress,MKBitmap *inputBitmaps);
 void createText3(Text *inputTextAddress ,ALLEGRO_FONT *font_16);
 
-void releaseMemory(mkworld inputworld[],MKMenu *inputMenu);
+void releaseMemory(mkworld inputworld[],MKMenu *inputMenu,MkScoreBoard *inputScoreBoard);
 
 int openMenu(Player *playerInput,Camera* cameraInput,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48,int *score);
 int openMenu2(Player *playerInput,Camera* cameraInput,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48,bool* level_2_unlock,bool* level_3_unlock,int *score);
-int openMenu3(Camera* cameraInput,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48);
-bool menuLogic(Player *playerInput,int* button_state,int* Level,Camera* camera,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48,bool* level_2_unlock,bool* level_3_unlock,int *score);
+int openMenu3(Camera* cameraInput,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48,int *ScoreBoardNum,MkScoreBoard *inputScoreBoard);
+bool menuLogic(Player *playerInput,int* button_state,int* Level,Camera* camera,bool* menu_active,ALLEGRO_MOUSE_STATE* mouseState,ALLEGRO_FONT* font_48,bool* level_2_unlock,bool* level_3_unlock,int *score,int *ScoreBoardNum,MkScoreBoard *inputScoreBoard,bool *ProgramActive);
 
 void insert( Node *sPtr, char value[] ,int score);
 void save_score(Node *inputNode);
@@ -102,5 +102,7 @@ void free_list(NodePtr *sPtr);
 void load_score(Node *sPtr);
 void EnterName(char inputName[16] , ALLEGRO_KEYBOARD_STATE *keyState , ALLEGRO_EVENT *ev, ALLEGRO_EVENT_QUEUE *event_queue,Camera *cameraInput,ALLEGRO_FONT *font_16);
 
+void ScoreBoard(Node *inputNode,MkScoreBoard *inputScoreBoard,int *ScoreBoardMaxNum);
+void printScoreBoard(int printNum,MkScoreBoard inputScoreBoard[],Camera *inputCamera,ALLEGRO_FONT* font_48);
 
 #endif /* _MYHEADER_H_ */

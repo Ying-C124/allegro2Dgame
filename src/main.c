@@ -26,6 +26,7 @@ int main() {
     int CD = 40;
     int monsterCD = 40;
     int MapCD = 1;
+    int ScoreBoardMaxNum;
     char name[16]={"TAILED"};
     bool menu_active = true,level_2_unlock = false,level_3_unlock = false,create = false;
     int button_state = 0;
@@ -36,12 +37,14 @@ int main() {
     al_set_window_title(display,"A New World!");
     //sample1 = al_load_sample("./pickup01.mp3");
     
+    MkScoreBoard scoreboard[MaxOfScoreBoard];
     Node Scorehead ;
     strncpy(Scorehead.name,name,sizeof(name)-1);
     Scorehead.score = 0;
     Scorehead.nextPtr = NULL;
 
     load_score(&Scorehead);
+    ScoreBoard(&Scorehead,&scoreboard,&ScoreBoardMaxNum);
     printf("%s\t%d\n",Scorehead.name,Scorehead.score);
 
     printf("level:\n");
@@ -105,7 +108,7 @@ int main() {
             //     }    
             // }
             //////
-            create = menuLogic(&player,&button_state,&Level,&camera,&menu_active,&mouseState,font_48,&level_2_unlock,&level_3_unlock,&score);
+            create = menuLogic(&player,&button_state,&Level,&camera,&menu_active,&mouseState,font_48,&level_2_unlock,&level_3_unlock,&score,&ScoreBoardMaxNum,scoreboard,&Active);
             if (create == true){
                 createWorld(world,NUM_WORLDS,&Bitmaps,&Sounds,font_16);
                 create == false;
@@ -178,7 +181,7 @@ int main() {
     printf("%s\t%d\n",Scorehead.name,Scorehead.score);
     save_score(&Scorehead);
 
-    releaseMemory(world,&Menus);
+    releaseMemory(world,&Menus,&scoreboard);
 
     al_destroy_bitmap(Bitmaps.checkpoint_image);
     al_destroy_bitmap(Bitmaps.chest_image);

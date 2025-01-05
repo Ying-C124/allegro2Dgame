@@ -126,6 +126,58 @@ void EnterName(char inputName[16] , ALLEGRO_KEYBOARD_STATE *keyState , ALLEGRO_E
 }
 
 
+void ScoreBoard(Node *inputNode,MkScoreBoard inputScoreBoard[],int *ScoreBoardMaxNum){
+    int max=1;
+    int i;
+    int nowRank;
+    int printNum;
+    Node tempNode = *inputNode;
+
+    while(tempNode.nextPtr != NULL){
+        max++;
+        tempNode = *tempNode.nextPtr;
+    }
+    
+    if(max < MaxOfScoreBoard)    printNum = max;
+    else    printNum = MaxOfScoreBoard;
+    
+    inputScoreBoard->Num = printNum;
+
+    tempNode = *inputNode;
+    *ScoreBoardMaxNum = printNum;
+
+    for(i=0;i<max;i++){
+        if((max-i)<=printNum){
+            strncpy(inputScoreBoard[max-i-1].NameAddress,tempNode.name,(sizeof(inputScoreBoard[0].NameAddress)-1));
+            inputScoreBoard[max-i-1].ScoreAddress = tempNode.score;
+        }
+        if(tempNode.nextPtr != NULL) tempNode = *tempNode.nextPtr;
+    }
+}
+
+#define RANGE 54
+#define StartPoint 120
+void printScoreBoard(int printNum,MkScoreBoard inputScoreBoard[],Camera *inputCamera,ALLEGRO_FONT* font_48){
+    char inputText[50];
+    int i;
+    al_draw_text(font_48,al_map_rgb(255,255,255),0,StartPoint-RANGE,0,"Rank:\tName:\tScore:");
+
+    for(i=0;i<printNum;i++){
+        sprintf(inputText,"%2d\t\t%s\t\t%d",i+1,inputScoreBoard[i].NameAddress,inputScoreBoard[i].ScoreAddress);
+        al_draw_text(font_48,al_map_rgb(255,255,255),0,StartPoint+i*RANGE,0,inputText);
+    }
+}
+
+
+    //     al_draw_text(font_48,al_map_rgb(255,255,255),0,100-(double)Range,0,RankTitleText);
+    // for(i=0;i<printNum;i++){
+    //     strcpy(tempStr,Name[i]);
+    //     sprintf(RankText,"%d\t,%s\t,%d\n",i+1,tempStr,Score[i]);
+    //     al_draw_text(font_48,al_map_rgb(255,255,255),0,100+i*(double)Range,0,RankText);
+    // }
+
+
+
 //這不能用
 // 顯示前 N 名高分
 // void display_top_scores(ALLEGRO_FONT* font) {

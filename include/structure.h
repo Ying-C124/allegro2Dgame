@@ -150,4 +150,10 @@ typedef struct Node {
 
 typedef Node *NodePtr;
 
+typedef struct ScoreBoard{
+    int Num;
+    char NameAddress[16];
+    int ScoreAddress;
+}MkScoreBoard;
+
 #endif 

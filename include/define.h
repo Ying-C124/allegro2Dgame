@@ -44,5 +44,6 @@
 
 #define SCORE_FILE "scores.txt"
 #define TOP_N 5
+#define MaxOfScoreBoard 10
 
 #endif 

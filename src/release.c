@@ -1,6 +1,6 @@
 #include "myheader.h"
 
-void releaseMemory(mkworld inputworld[],MKMenu *inputMenu){
+void releaseMemory(mkworld inputworld[],MKMenu *inputMenu,MkScoreBoard *inputScoreBoard){
     int i;
     
     for(i=0 ; i<NUM_WORLDS;i++){
@@ -17,6 +17,9 @@ void releaseMemory(mkworld inputworld[],MKMenu *inputMenu){
             inputworld[i].monsterAddress = NULL;
         }
     }
+
+    free(inputScoreBoard->NameAddress);
+
     al_destroy_menu(inputMenu->Game);
     al_destroy_menu(inputMenu->Resolution);
     al_destroy_menu(inputMenu->Setting);
