@@ -259,6 +259,7 @@ void ying_renderWorld(Camera* cameraInput,Ground groundInputs[],Object objectInp
     }
 
     //////////
+    playerInput->LV=1+score/5;
     sprintf(scoreText, "Score: %d", score);
     sprintf(levelText, "Level: %d", playerInput->LV);
     al_draw_text(textInputs[0].font, al_map_rgb(255, 255, 255),cameraInput->x + 10, cameraInput->y + 10, ALLEGRO_ALIGN_LEFT, scoreText);

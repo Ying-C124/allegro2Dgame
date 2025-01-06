@@ -156,4 +156,8 @@ typedef struct ScoreBoard{
     int ScoreAddress;
 }MkScoreBoard;
 
+typedef struct {
+    Player players[2];
+} GameState;
+
 #endif 

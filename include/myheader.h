@@ -21,6 +21,8 @@
 #include "define.h"
 #include "structure.h"
 
+#include <enet/enet.h>
+
 // Function prototypes
 Player create_player(double x, double y, double checkpoint_x,double checkpoint_y, double width, double height,
  double horizonSpeed, double verticalSpeed, double g, int collisionHorizon, int collisionVert,
@@ -36,8 +38,7 @@ void drawMonster(Monster monster);
 void monsterCollision(Monster monsters[],Player *player,int *monsterCD,int numMonsters,int *score);
 void move_player(Player *player, Ground grounds[], int num_grounds,Object objects[], int num_objects, ALLEGRO_KEYBOARD_STATE *keyState,ALLEGRO_JOYSTICK_STATE *JoyState,ALLEGRO_BITMAP *player_image_tmp[]);
 void moveMonster(Monster monsters[],int numMonsters);
-void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps,int* level,bool* level_2_unlock,bool* level_3_unlock);
-
+void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps,int* level,bool* level_2_unlock,bool* level_3_unlock,Node *Scoreheadptr,char name[16],bool* menu_active,int* button_state);
 //all_
 void all_initialize();
 
@@ -53,7 +54,7 @@ void ying_renderWorld(Camera* cameraInput,Ground groundInputs[], Object objectIn
 //ying_MenuResolution
 int ying_MenuDecoder(ALLEGRO_EVENT *ev);
 void ying_Resoultion(int *nativeWidth, int *nativeHeigth, int inputMenuID ,Camera *inputCamera, ALLEGRO_DISPLAY* inputDisplay);
-void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel,bool* menu_active,int* button_state);
+void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel,bool* menu_active,int* button_state,int score,MkScoreBoard *inputScoreboard[],Node *inputNode,char name[16]);
 void ying_ResetPlayerLocal(Player *inputPlayer);
 
 //ying_joystick
@@ -104,5 +105,24 @@ void EnterName(char inputName[16] , ALLEGRO_KEYBOARD_STATE *keyState , ALLEGRO_E
 
 void ScoreBoard(Node *inputNode,MkScoreBoard *inputScoreBoard,int *ScoreBoardMaxNum);
 void printScoreBoard(int printNum,MkScoreBoard inputScoreBoard[],Camera *inputCamera,ALLEGRO_FONT* font_48);
+
+
+// Initialize ENet
+bool init_enet();
+
+// Server function
+ENetHost* create_server(unsigned short port);
+
+// Client function
+ENetHost* create_client();
+
+// Send local player state
+void send_player_state(ENetHost* host, ENetPeer* peer, Player* player, int playerIndex);
+
+// Receive incoming updates
+void receive_updates(ENetHost* host, GameState* gameState);
+
+// Shutdown
+void shutdown_enet(ENetHost* host);
 
 #endif /* _MYHEADER_H_ */

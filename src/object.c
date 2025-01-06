@@ -6,7 +6,7 @@ Object create_object(double x, double y, double width, double height, ALLEGRO_BI
 }
 
 
-void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps,int* level,bool* level_2_unlock,bool* level_3_unlock) {
+void check_object_collision(Object object[], Player *player, int *score,int objectNum,MKBitmap *inputBitmaps,int* level,bool* level_2_unlock,bool* level_3_unlock,Node *Scoreheadptr,char name[16],bool* menu_active,int* button_state) {
     int i,j;
     for(i = 0; i<=objectNum; i++)
     {
@@ -75,6 +75,18 @@ void check_object_collision(Object object[], Player *player, int *score,int obje
                     }
                     else if(*level == 3){
                         *level_3_unlock = true;
+                        ///
+                        player->x = 4500;
+                        player->y = 800;
+                        player->checkpoint_x = 4500;
+                        player->checkpoint_y = 800;
+                        ///
+                    }
+                    else{
+                        *button_state = 0;
+                        *level = 1;
+                        insert(Scoreheadptr,name,*score);
+                        *menu_active = true;
                     }
                 }
                 break;

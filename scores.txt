@@ -1,5 +1,13 @@
 TAILED          	0
+hgfhfgh         	2
 gthfghfgh       	2
+hgfhfgh         	3
+hgfhfgh         	6
 test            	9
+hello'          	9
+cg2             	10
+cg2             	10
 alex            	18
 alex            	19
+HELLO           	29
+wayne           	46

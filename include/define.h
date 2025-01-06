@@ -25,11 +25,6 @@
 #define LEVEL2 2332
 #define LEVEL3 2333
 
-// Define constants
-// #define NUM_GROUNDS 20
-// #define NUM_OBJECTS 9
-// #define NUM_MONSTERS 20
-// #define NUM_TEXTS 8
 #define NUM_WORLDS 3
 //世界的邊緣，可能需要程式嫁接
 #define WORLD_WIDTH 100500

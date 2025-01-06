@@ -6,6 +6,75 @@ int main() {
     int resolutionWidth = 1600; 
     int resolutionHeigth = 900;
 
+    //MultiPlayer
+    int localPlayerIndex = 0;
+
+    if (!init_enet()) return -1;
+
+    ENetHost* networkHost = NULL;
+    ENetPeer* peer = NULL;
+
+// First try as client
+    networkHost = create_client();
+    if (!networkHost) {
+        fprintf(stderr, "Failed to create client.\n");
+        return -1;
+    }
+    ENetAddress address;
+    enet_address_set_host(&address, "127.0.0.1");
+    address.port = 1234;
+    peer = enet_host_connect(networkHost, &address, 2, 0);
+
+    bool isServer = false;
+    bool isSinglePlayer = false;
+    if (!peer) {
+        isServer = true;
+    } else {
+        // Wait briefly to see if the connection succeeds
+        ENetEvent event;
+        if (enet_host_service(networkHost, &event, 5000) > 0) { //5s timeout
+            if (event.type == ENET_EVENT_TYPE_CONNECT) {
+                printf("Connected to server!\n");
+                localPlayerIndex = 1; // Client player index
+            } else {
+                // Failed to connect; become server instead
+                enet_peer_reset(peer);
+                enet_host_destroy(networkHost);
+                isServer = true;
+            }
+        } else {
+            // Timed out
+            enet_peer_reset(peer);
+            enet_host_destroy(networkHost);
+            isServer = true;
+        }
+    }
+
+    if (isServer) {
+        networkHost = create_server(1234);
+        if (!networkHost) {
+            fprintf(stderr, "Failed to create server.\n");
+            return -1;
+        }
+        peer = NULL;
+        printf("Server started.\n");
+
+        // Wait for a client to connect with a timeout
+        ENetEvent event;
+        if (enet_host_service(networkHost, &event, 20000) > 0) { // 20 seconds timeout
+            if (event.type == ENET_EVENT_TYPE_CONNECT) {
+                printf("Client connected!\n");
+                peer = event.peer;
+            } else {
+                printf("No client connected. Starting single-player game.\n");
+                isSinglePlayer = true;
+            }
+        } else {
+            printf("No client connected. Starting single-player game.\n");
+            isSinglePlayer = true;
+        }
+    }
+
     all_initialize();
     Camera camera; 
     MKBitmap Bitmaps;   //The Structure For Bitmaps.
@@ -30,13 +99,25 @@ int main() {
     char name[16]={"TAILED"};
     bool menu_active = true,level_2_unlock = false,level_3_unlock = false,create = false;
     int button_state = 0;
+
+// Initialize your game state
+    GameState gameState;
+    memset(&gameState, 0, sizeof(gameState));
+
+    // For demonstration: first player is local
+    gameState.players[0] = create_player(100, 100, 100, 100, 40, 40, 6.0, 0, 1.0, 0, 0, false,
+                                         NULL, 20, 1, 1, 0, 0, 0);
+    // Second player starts at different coords
+    gameState.players[1] = create_player(300, 100, 300, 100, 40, 40, 6.0, 0, 1.0, 0, 0, false,
+                                         NULL, 20, 1, 1, 0, 0, 0);
+
     ying_loadingBitmap(&Bitmaps);                           //inital and Load Bitmaps.
     leng_playerImgInit(Bitmaps.player_images,playerImages); //inital and Load the Animation for Player.
     ying_loadingSound(&Sounds);                             //inital and Load Sound,Samples.
     al_start_timer(timer); 
     al_set_window_title(display,"A New World!");
     //sample1 = al_load_sample("./pickup01.mp3");
-    
+
     MkScoreBoard scoreboard[MaxOfScoreBoard];
     Node Scorehead ;
     strncpy(Scorehead.name,name,sizeof(name)-1);
@@ -46,6 +127,10 @@ int main() {
     load_score(&Scorehead);
     ScoreBoard(&Scorehead,&scoreboard,&ScoreBoardMaxNum);
     printf("%s\t%d\n",Scorehead.name,Scorehead.score);
+
+    // Assign images to players
+    gameState.players[0].image = Bitmaps.player_images[0];
+    gameState.players[1].image = Bitmaps.player_images[0];
 
     printf("level:\n");
     // scanf("%d",&Level);
@@ -71,11 +156,6 @@ int main() {
 
     //Detect Joystick
     joyStickPluged = load_joystick_info(joy1);
-
-
-    //在這邊插入程式碼，主選單
-
-    //
 
     //Inital Camera
     ying_setCamera(&camera,(double)resolutionWidth,(double)resolutionHeigth);
@@ -123,7 +203,7 @@ int main() {
                     ying_Resoultion(&resolutionWidth,&resolutionHeigth,ev.user.data1,&camera,display);
                 }
                 else if(i == 1){
-                    ying_GameMenu(&ev,&player,&Active,&Level,&menu_active,&button_state);
+                    ying_GameMenu(&ev,&player,&Active,&Level,&menu_active,&button_state,score,scoreboard,&Scorehead,name);
                 }
                 /*Reserve for External Function in Future*/
             }
@@ -141,7 +221,7 @@ int main() {
                 
                 al_clear_to_color(al_map_rgb(0, 0, 0));  
                 move_player(&player, world[Level-1].groundAddress, world[Level-1].groundNum, world[Level-1].objectAddress, world[Level-1].objectNum, &keyState , &joyState, Bitmaps.player_images);
-                check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum,&Bitmaps,&Level,&level_2_unlock,&level_3_unlock);
+                check_object_collision(world[Level-1].objectAddress, &player, &score,world[Level-1].objectNum,&Bitmaps,&Level,&level_2_unlock,&level_3_unlock,&Scorehead,name,&menu_active,&button_state);
                 moveMonster(world[Level-1].monsterAddress,world[Level-1].monsterNum);
                 monsterCollision(world[Level-1].monsterAddress,&player,&monsterCD,world[Level-1].monsterNum,&score);
                 ying_attacking(&player,&world[Level-1] ,&keyState,&joyState,&CD,Bitmaps.player_images,&score,&Sounds);
@@ -150,7 +230,27 @@ int main() {
                 world[Level-1].textAddress,&player,score,
                 world[Level-1].groundNum,world[Level-1].objectNum,world[Level-1].monsterNum,world[Level-1].textNum);
                 //al_draw_text(font_24, al_map_rgb(255, 0, 0), 100, 400, 0, "TEST");
+                
+                printf("%d\n",&gameState.players[localPlayerIndex].HP);
+                
+                if (!isSinglePlayer) {
+                 // Send local player info
+                send_player_state(networkHost, peer, &gameState.players[localPlayerIndex], localPlayerIndex);
 
+                // Receive remote updates
+                receive_updates(networkHost, &gameState);
+
+                // Draw the remote player if the image is not NULL
+                int remotePlayerIndex = (localPlayerIndex == 0) ? 1 : 0;
+                if (gameState.players[remotePlayerIndex].image != NULL) {
+                    draw_player(gameState.players[remotePlayerIndex]);
+                }
+
+
+            }
+
+
+                
                 Map(&camera,&player,&world[Level-1],&keyState,&joyState,&MapCD,&Bitmaps);
 
                 printf("%d\n",player.HP);
@@ -166,7 +266,7 @@ int main() {
                 ying_Resoultion(&resolutionWidth,&resolutionHeigth,ev.user.data1,&camera,display);
             }
             else if(i == 1){
-                ying_GameMenu(&ev,&player,&Active,&Level,&menu_active,&button_state);
+                ying_GameMenu(&ev,&player,&Active,&Level,&menu_active,&button_state,score,scoreboard,&Scorehead,name);
             }
             /*Reserve for External Function in Future*/
         }
@@ -177,7 +277,6 @@ int main() {
     
     //Release the data in memory.
     al_destroy_display(display);
-    insert(&Scorehead,name,score);
     printf("%s\t%d\n",Scorehead.name,Scorehead.score);
     save_score(&Scorehead);
 

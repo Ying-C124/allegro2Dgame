@@ -56,8 +56,10 @@ void ying_Resoultion(int *nativeWidth, int *nativeHeigth, int inputMenuID,Camera
     inputCamera->cameraHeight = settingHeigth;
 }
 
-void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel,bool* menu_active,int* button_state){
+void ying_GameMenu(ALLEGRO_EVENT *ev,Player *inputPlayer,bool *inputActive,int *inputLevel,bool* menu_active,int* button_state,int score,MkScoreBoard *inputScoreboard[],Node *inputNode,char name[16]){
     if(ev->user.data1 ==SAVE_SCORE){
+        insert(inputNode,name,score);
+        save_score(inputNode);
         printf("Save_Score\n");
     }
     else if(ev->user.data1 ==READ_SCORE_BOARD){

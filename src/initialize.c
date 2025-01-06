@@ -98,7 +98,7 @@ void ying_InitMenu(MKMenu *inputMenu,ALLEGRO_DISPLAY *inputDisplay){
     al_append_menu_item(inputMenu->Resolution, "3840x2160",QUAD,0,NULL,NULL);
 
     al_append_menu_item(inputMenu->Game,"Save" ,SAVE_SCORE , 0 , NULL , NULL);
-    al_append_menu_item(inputMenu->Game,"Read" ,READ_SCORE_BOARD , 0 , NULL , NULL);
+    // al_append_menu_item(inputMenu->Game,"Read" ,READ_SCORE_BOARD , 0 , NULL , NULL); //用不到了
     al_append_menu_item(inputMenu->Game,"Respawn" ,SPAWN , 0 , NULL , NULL);
     al_append_menu_item(inputMenu->Game,"Back to Menu" ,BACK_TO_MENU , 0 , NULL , NULL);
     al_append_menu_item(inputMenu->Game,"Quit" ,EXIT_ID ,0 , NULL ,NULL);
